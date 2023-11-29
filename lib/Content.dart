@@ -11,6 +11,12 @@ class ContentWidgetOne extends StatelessWidget {
       institutions: [
         'Institución 1',
         'Institución 2',
+        'Institución 3',
+        'Institución 1',
+        'Institución 2',
+        'Institución 3',
+        'Institución 1',
+        'Institución 2',
         'Institución 3'
       ], // Reemplaza con tus datos
     ));
