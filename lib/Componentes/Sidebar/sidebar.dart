@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Pantallas/RegContent.dart';
+import 'package:frontend/Componentes/Pantallas/RegContent.dart';
 import 'sidebar_profile.dart';
 
 class CustomDrawer extends StatelessWidget {

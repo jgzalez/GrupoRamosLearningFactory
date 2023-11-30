@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Componentes/NavigationArrows.dart';
+// import 'package:frontend/Componentes/Barra%20Inferior/NavigationArrows.dart';
 
-Row BottomBar({
-  required int totalPages,
-  required int currentPage,
-  required Function(int) onPageChanged,
-}) {
+Row BottomBar() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [

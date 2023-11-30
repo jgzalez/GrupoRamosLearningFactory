@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Componentes/BottomBar.dart';
-import 'package:frontend/Componentes/BuildGrid.dart';
-import 'package:frontend/Componentes/CreateNewButton.dart';
-import 'package:frontend/Componentes/TitleBar.dart';
+import 'package:frontend/Componentes/Barra%20Inferior/BottomBar.dart';
+import 'package:frontend/Componentes/Grid/BuildGrid.dart';
+import 'package:frontend/Componentes/Barra%20Superior/CreateNewButton.dart';
+import 'package:frontend/Componentes/Barra%20Superior/TitleBar.dart';
 
 class RegContent extends StatelessWidget {
   final String title;
@@ -32,6 +32,7 @@ class RegContent extends StatelessWidget {
           CreateNewButton(),
           const SizedBox(height: 8.0),
           Expanded(child: GridBuilderWidget(items: institutions)),
+          BottomBar()
         ],
       ),
     );

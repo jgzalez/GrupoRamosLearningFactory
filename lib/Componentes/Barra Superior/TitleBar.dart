@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Componentes/SearchField.dart';
+import 'package:frontend/Componentes/Barra%20Superior/SearchField.dart';
 
 class TitleBarWidget extends StatelessWidget {
   final String title;
