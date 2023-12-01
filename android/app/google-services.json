@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "392448934525",
+    "project_id": "grupo-ramos--lf",
+    "storage_bucket": "grupo-ramos--lf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392448934525:android:4beb6496b7a4bbf939a714",
+        "android_client_info": {
+          "package_name": "com.example.frontend"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZlvNAl1o-BURrZaxFX5Z0ahMHVE2JNSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/LoginPage.dart';
+import 'firebase_options.dart'; // Asegúrate de que esta línea esté presente y sea correcta
 import 'Componentes/Sidebar/sidebar.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
@@ -12,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       home:
-          MyHomePage(), // Ensure you have a 'home' or properly set up 'routes'.
+          LoginScreen(), // Ensure you have a 'home' or properly set up 'routes'.
     );
   }
 }
