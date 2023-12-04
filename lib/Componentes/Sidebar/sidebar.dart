@@ -1,11 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/Componentes/Grid/CardItem.dart';
 import 'package:frontend/Componentes/Pantallas/RegContent.dart';
+import 'package:frontend/NavPages/EstablismentReg.dart';
+import 'package:frontend/NavPages/ReportMakerForm.dart';
 import 'sidebar_profile.dart';
 
 class CustomDrawer extends StatelessWidget {
   final Function(Widget) onSelectContent;
+  // Crear listas de CardItems
+  final List<CardItem> institutions1 = [
+    CardItem(
+        title: 'Institución 1',
+        imageUrl:
+            'https://cdn.pixabay.com/photo/2019/04/04/15/17/smartphone-4103051_640.jpg',
+        creationDate: '12-04-2023',
+        author: 'Jose Gonzalez',
+        description: 'Esta es una carta de prueba'),
+    CardItem(
+        title: 'Institución 2',
+        imageUrl:
+            'https://cdn.com.do/wp-content/uploads/2022/05/mozart-la-para-6272e269a17a6.jpg',
+        creationDate: '12-04-2023',
+        author: 'Jose Gonzalez',
+        description: 'Esta es una carta de prueba'),
+    // ... añade más CardItems ...
+  ];
 
-  const CustomDrawer({super.key, required this.onSelectContent});
+  final List<CardItem> institutions2 = [
+    CardItem(
+        title: 'Modelo 1',
+        imageUrl:
+            'https://media.istockphoto.com/id/530685719/es/foto/grupo-de-empresarios-de-pie-en-el-pasillo-sonriendo-y-hablando-juntos.webp?b=1&s=612x612&w=0&k=20&c=ysTsFXorWFgsCfxq-Y1qwJtQLUxWavFQ24tVI8ZNabg=',
+        creationDate: '12-04-2023',
+        author: 'Jose Gonzalez',
+        description: 'Esta es una carta de prueba'),
+    CardItem(
+        title: 'Modelo 2',
+        imageUrl:
+            'https://cdn.pixabay.com/photo/2018/06/17/20/35/chain-3481377_1280.jpg',
+        creationDate: '12-04-2023',
+        author: 'Jose Gonzalez',
+        description: 'Esta es una carta de prueba'),
+    // ... añade más CardItems ...
+  ];
+  CustomDrawer({super.key, required this.onSelectContent});
 
   @override
   Widget build(BuildContext context) {
@@ -25,44 +63,56 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            title: const Text('RegContent'),
+            title: const Text('Establecimientos'),
             onTap: () {
               onSelectContent(RegContent(
-                title: 'RegContent Title',
-                institutions: const [
-                  'Institución 1',
-                  'Institución 2,',
-                  'Institución 3',
-                  'Institución 4,',
-                  'Institución 5',
-                  'Institución 6,',
-                  'Institución 7',
-                  'Institución 8,',
-                  'Institución 9',
-                  'Institución 10,'
-                ],
-                key: const ValueKey('reglkgContent'),
+                title: 'Establecimientos',
+                isEstablishmentPage: true,
+                onCreateNewPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EstablishmentRegistrationForm()),
+                  );
+                },
+                institutions: institutions1,
+                key: const ValueKey('establecimientos'),
               ));
             },
           ),
           ListTile(
-            title: const Text('RegConteasdnt'),
+            title: const Text('Modelos Predictivos'),
             onTap: () {
               onSelectContent(
                 RegContent(
-                  title: 'RegContesdasnt Title',
-                  institutions: const [
-                    'Institución 1',
-                    'Institución 2,',
-                    'Institución 3',
-                    'Institución 4,',
-                  ],
+                  title: 'Modelos Predictivos',
+                  institutions: institutions2,
                   key: const ValueKey('regContent'),
                 ),
               );
             },
-          )
+          ),
           // ... otros ListTiles para diferentes contenidos ...
+          ListTile(
+            title: const Text('Reportes'),
+            onTap: () {
+              onSelectContent(
+                RegContent(
+                  isEstablishmentPage: true,
+                  onCreateNewPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ReportMakerForm()),
+                    );
+                  },
+                  title: 'Reportes',
+                  institutions: institutions2,
+                  key: const ValueKey('reportes'),
+                ),
+              );
+            },
+          )
         ],
       ),
     );

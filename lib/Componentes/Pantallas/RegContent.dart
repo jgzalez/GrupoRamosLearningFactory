@@ -3,15 +3,20 @@ import 'package:frontend/Componentes/Barra%20Inferior/BottomBar.dart';
 import 'package:frontend/Componentes/Grid/BuildGrid.dart';
 import 'package:frontend/Componentes/Barra%20Superior/CreateNewButton.dart';
 import 'package:frontend/Componentes/Barra%20Superior/TitleBar.dart';
+import 'package:frontend/Componentes/Grid/CardItem.dart';
 
 class RegContent extends StatelessWidget {
   final String title;
-  final List<String> institutions;
+  final List<CardItem> institutions;
+  final VoidCallback? onCreateNewPressed;
+  final bool isEstablishmentPage; // Variable final
 
   const RegContent({
     Key? key,
     required this.title,
     required this.institutions,
+    this.onCreateNewPressed,
+    this.isEstablishmentPage = false,
   }) : super(key: key);
 
   @override
@@ -29,7 +34,7 @@ class RegContent extends StatelessWidget {
           TitleBarWidget(title: title),
           const SizedBox(height: 16.0),
           const Divider(),
-          CreateNewButton(),
+          CreateNewButton(onPressed: onCreateNewPressed),
           const SizedBox(height: 8.0),
           Expanded(child: GridBuilderWidget(items: institutions)),
           BottomBar()
