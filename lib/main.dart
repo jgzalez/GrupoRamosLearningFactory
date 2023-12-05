@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       home:
-          MyHomePage(), // Ensure you have a 'home' or properly set up 'routes'.
+          LoginScreen(), // Ensure you have a 'home' or properly set up 'routes'.
     );
   }
 }
