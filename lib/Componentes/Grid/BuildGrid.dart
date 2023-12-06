@@ -10,7 +10,7 @@ class GridBuilderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2, // Ajustado para una mejor visualización
+        crossAxisCount: 4, // Ajustado para una mejor visualización
         childAspectRatio: 0.8,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
@@ -21,9 +21,16 @@ class GridBuilderWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Expanded(
-                child: Image.network(items[index].imageUrl, fit: BoxFit.cover),
-              ),
+              AspectRatio(
+                  aspectRatio:
+                      1.9, // Controla la relación de aspecto de la imagen
+                  child: Image.network(
+                    items[index].imageUrl,
+                    fit: BoxFit.cover,
+                  )),
+              // Expanded(
+              //   child: Image.network(items[index].imageUrl, fit: BoxFit.cover),
+              // ),
               Padding(
                 padding: EdgeInsets.all(8),
                 child: Column(
@@ -33,7 +40,11 @@ class GridBuilderWidget extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     Text(items[index].creationDate),
                     Text(items[index].author),
-                    Text(items[index].description),
+                    Text(
+                      items[index].description,
+                      maxLines: 2, // Limita las líneas de la descripción
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ],
                 ),
               ),

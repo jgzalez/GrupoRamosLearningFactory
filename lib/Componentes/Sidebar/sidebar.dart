@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Componentes/Grid/CardItem.dart';
 import 'package:frontend/Componentes/Pantallas/RegContent.dart';
+import 'package:frontend/LoginPage.dart';
 import 'package:frontend/NavPages/EstablismentReg.dart';
 import 'package:frontend/NavPages/ReportMakerForm.dart';
 import 'package:frontend/Wiki/InstitutionsWiki.dart';
@@ -49,92 +51,121 @@ class CustomDrawer extends StatelessWidget {
   ];
   CustomDrawer({super.key, required this.onSelectContent});
 
+  Future<void> _logout(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
         children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 31, 122, 201),
-            ),
-            child: ProfileWidget(
-              imageUrl:
-                  'https://cdn.com.do/wp-content/uploads/2022/05/mozart-la-para-6272e269a17a6.jpg',
-              name: 'Jose Gonzalez',
-              role: 'Software Developer',
-            ),
-          ),
-          ListTile(
-            title: const Text('Establecimientos'),
-            onTap: () {
-              onSelectContent(RegContent(
-                title: 'Establecimientos',
-                isEstablishmentPage: true,
-                onHelpPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => InstitutionsWiki()));
+          Expanded(
+            child: ListView(padding: EdgeInsets.zero, children: <Widget>[
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 31, 122, 201),
+                ),
+                child: ProfileWidget(
+                  imageUrl:
+                      'https://cdn.com.do/wp-content/uploads/2022/05/mozart-la-para-6272e269a17a6.jpg',
+                  name: 'Jose Gonzalez',
+                  role: 'Software Developer',
+                ),
+              ),
+              // ... tus ListTiles para Establecimientos, Modelos Predictivos, etc. ...
+              ListTile(
+                title: const Text('Establecimientos'),
+                onTap: () {
+                  onSelectContent(RegContent(
+                    title: 'Establecimientos',
+                    isEstablishmentPage: true,
+                    onHelpPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InstitutionsWiki()));
+                    },
+                    onCreateNewPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                EstablishmentRegistrationForm()),
+                      );
+                    },
+                    institutions: institutions1,
+                    key: const ValueKey('establecimientos'),
+                  ));
                 },
-                onCreateNewPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EstablishmentRegistrationForm()),
+              ),
+              ListTile(
+                title: const Text('Modelos Predictivos'),
+                onTap: () {
+                  onSelectContent(
+                    RegContent(
+                      title: 'Modelos Predictivos',
+                      onHelpPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ModelsWiki()),
+                        );
+                      },
+                      institutions: institutions2,
+                      key: const ValueKey('regContent'),
+                    ),
                   );
                 },
-                institutions: institutions1,
-                key: const ValueKey('establecimientos'),
-              ));
-            },
+              ),
+              // ... otros ListTiles para diferentes contenidos ...
+              ListTile(
+                title: const Text('Reportes'),
+                onTap: () {
+                  onSelectContent(
+                    RegContent(
+                      onHelpPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReportsWiki()),
+                        );
+                      },
+                      isEstablishmentPage: true,
+                      onCreateNewPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ReportMakerForm()),
+                        );
+                      },
+                      title: 'Reportes',
+                      institutions: institutions2,
+                      key: const ValueKey('reportes'),
+                    ),
+                  );
+                },
+              ),
+            ]),
           ),
-          ListTile(
-            title: const Text('Modelos Predictivos'),
-            onTap: () {
-              onSelectContent(
-                RegContent(
-                  title: 'Modelos Predictivos',
-                  onHelpPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ModelsWiki()),
-                    );
-                  },
-                  institutions: institutions2,
-                  key: const ValueKey('regContent'),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.blueGrey,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
                 ),
-              );
-            },
+              ],
+            ),
+            child: ListTile(
+              leading: Icon(Icons.exit_to_app), // Icono de puerta/salida
+              title: const Text('Cerrar Sesión'),
+              onTap: () => _logout(context),
+            ),
           ),
-          // ... otros ListTiles para diferentes contenidos ...
-          ListTile(
-            title: const Text('Reportes'),
-            onTap: () {
-              onSelectContent(
-                RegContent(
-                  onHelpPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ReportsWiki()),
-                    );
-                  },
-                  isEstablishmentPage: true,
-                  onCreateNewPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReportMakerForm()),
-                    );
-                  },
-                  title: 'Reportes',
-                  institutions: institutions2,
-                  key: const ValueKey('reportes'),
-                ),
-              );
-            },
-          )
         ],
       ),
     );

@@ -21,7 +21,9 @@ class InstitutionsWiki extends StatelessWidget {
               sectionTitle('Descripción General'),
               sectionContent(
                   'Los establecimientos del Grupo Ramos en la aplicación se dividen en dos categorías: '
-                  'Sirena Market e Híper Market. Cada categoría tiene modelos predictivos asignados para evaluar y analizar su rendimiento.'),
+                  'Sirena Market e Híper Market. Cada categoría tiene modelos predictivos asignados para evaluar y analizar su rendimiento.'
+                  ' \n Los mismos estarán representados en la intefaz de establecimientos como tarjetas'
+                  'Para registrar un nuevo establecimiento, el usuario debe presionar la inter'),
 
               // Estructura de Datos y Modelos
               sectionTitle('Estructura de Datos y Modelos'),
