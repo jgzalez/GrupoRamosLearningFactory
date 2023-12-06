@@ -3,10 +3,14 @@ import 'package:frontend/Componentes/Grid/CardItem.dart';
 import 'package:frontend/Componentes/Pantallas/RegContent.dart';
 import 'package:frontend/NavPages/EstablismentReg.dart';
 import 'package:frontend/NavPages/ReportMakerForm.dart';
+import 'package:frontend/Wiki/InstitutionsWiki.dart';
+import 'package:frontend/Wiki/ModelsWiki.dart';
+import 'package:frontend/Wiki/ReportsWiki.dart';
 import 'sidebar_profile.dart';
 
 class CustomDrawer extends StatelessWidget {
   final Function(Widget) onSelectContent;
+
   // Crear listas de CardItems
   final List<CardItem> institutions1 = [
     CardItem(
@@ -68,6 +72,12 @@ class CustomDrawer extends StatelessWidget {
               onSelectContent(RegContent(
                 title: 'Establecimientos',
                 isEstablishmentPage: true,
+                onHelpPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => InstitutionsWiki()));
+                },
                 onCreateNewPressed: () {
                   Navigator.push(
                     context,
@@ -86,6 +96,12 @@ class CustomDrawer extends StatelessWidget {
               onSelectContent(
                 RegContent(
                   title: 'Modelos Predictivos',
+                  onHelpPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ModelsWiki()),
+                    );
+                  },
                   institutions: institutions2,
                   key: const ValueKey('regContent'),
                 ),
@@ -98,6 +114,12 @@ class CustomDrawer extends StatelessWidget {
             onTap: () {
               onSelectContent(
                 RegContent(
+                  onHelpPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ReportsWiki()),
+                    );
+                  },
                   isEstablishmentPage: true,
                   onCreateNewPressed: () {
                     Navigator.push(

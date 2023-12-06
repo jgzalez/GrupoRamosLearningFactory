@@ -10,6 +10,7 @@ class RegContent extends StatelessWidget {
   final List<CardItem> institutions;
   final VoidCallback? onCreateNewPressed;
   final bool isEstablishmentPage; // Variable final
+  final VoidCallback? onHelpPressed;
 
   const RegContent({
     Key? key,
@@ -17,6 +18,7 @@ class RegContent extends StatelessWidget {
     required this.institutions,
     this.onCreateNewPressed,
     this.isEstablishmentPage = false,
+    this.onHelpPressed,
   }) : super(key: key);
 
   @override
@@ -37,7 +39,9 @@ class RegContent extends StatelessWidget {
           CreateNewButton(onPressed: onCreateNewPressed),
           const SizedBox(height: 8.0),
           Expanded(child: GridBuilderWidget(items: institutions)),
-          BottomBar()
+          BottomBar(
+            onHelpPressed: onHelpPressed,
+          )
         ],
       ),
     );
@@ -47,8 +51,8 @@ class RegContent extends StatelessWidget {
     return [
       BoxShadow(
         color: Colors.grey.withOpacity(0.5),
-        spreadRadius: 5,
-        blurRadius: 7,
+        spreadRadius: 1,
+        blurRadius: 1,
         offset: const Offset(0, 3),
       ),
     ];
