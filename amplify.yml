@@ -8,8 +8,9 @@ frontend:
         - wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.16.3-stable.tar.xz
         - tar xf flutter_linux_3.16.3-stable.tar.xz
         - export PATH="$PATH:`pwd`/flutter/bin"
+        - flutter doctor -v
+        - git config --global --add safe.directory `pwd`/flutter
         - npm install
-    # IMPORTANT - Please verify your build commands
     build:
       commands: 
         - flutter build web
@@ -20,3 +21,4 @@ frontend:
   cache:
     paths:
       - node_modules/**/*
+      - .pub-cache/**
