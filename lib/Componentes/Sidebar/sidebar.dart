@@ -71,7 +71,7 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 child: ProfileWidget(
                   imageUrl:
-                      'https://cdn.com.do/wp-content/uploads/2022/05/mozart-la-para-6272e269a17a6.jpg',
+                      'https://static1.cbrimages.com/wordpress/wp-content/uploads/2018/08/jake-the-dog-pure-css-adventure-time-wallpaper-by-sangreprimitiva-d5vs51f.jpg?q=50&fit=contain&w=1140&h=&dpr=1.5',
                   name: 'Jose Gonzalez',
                   role: 'Software Developer',
                 ),
