@@ -3,11 +3,20 @@ frontend:
   phases:
     preBuild:
       commands:
+        - npm ci
+        - yum install -y xz
+        - wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.16.3-stable.tar.xz
+        - tar xf flutter_linux_3.16.3-stable.tar.xz
+        - export PATH="$PATH:`pwd`/flutter/bin"
         - npm install
+    # IMPORTANT - Please verify your build commands
     build:
-      commands:
+      commands: 
         - flutter build web
-artifacts:
-  baseDirectory: build/web
-  files:
-    - '**/*'
+  artifacts:
+    baseDirectory: build/web
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
