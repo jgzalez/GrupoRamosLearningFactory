@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Componentes/Grid/CardItem.dart';
@@ -65,15 +66,49 @@ class CustomDrawer extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-              const DrawerHeader(
+              DrawerHeader(
                 decoration: BoxDecoration(
                   color: Color.fromARGB(255, 31, 122, 201),
                 ),
-                child: ProfileWidget(
-                  imageUrl:
-                      'https://cdn.com.do/wp-content/uploads/2022/05/mozart-la-para-6272e269a17a6.jpg',
-                  name: 'Jose Gonzalez',
-                  role: 'Software Developer',
+                child: FutureBuilder<Map<String, dynamic>?>(
+                  future: obtenerDatosUsuario(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        var userData = snapshot.data!;
+                        String imageUrl = userData['profileImage'] ??
+                            'url_imagen_por_defecto';
+                        String name =
+                            userData['name'] ?? 'Nombre no disponible';
+                        String role = userData['role'] ?? 'Rol no disponible';
+
+                        return DrawerHeader(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 31, 122, 201),
+                          ),
+                          child: ProfileWidget(
+                            imageUrl: imageUrl,
+                            name: name,
+                            role: role,
+                          ),
+                        );
+                      } else {
+                        return DrawerHeader(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 31, 122, 201),
+                          ),
+                          child: Text("No se encontraron datos del usuario."),
+                        );
+                      }
+                    }
+                    return DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(255, 31, 122, 201),
+                      ),
+                      child:
+                          CircularProgressIndicator(), // Mientras los datos están cargando
+                    );
+                  },
                 ),
               ),
               // ... tus ListTiles para Establecimientos, Modelos Predictivos, etc. ...
@@ -169,5 +204,17 @@ class CustomDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<Map<String, dynamic>?> obtenerDatosUsuario() async {
+    User? usuario = FirebaseAuth.instance.currentUser;
+    if (usuario != null) {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(usuario.uid)
+          .get();
+      return snapshot.data() as Map<String, dynamic>?;
+    }
+    return null;
   }
 }

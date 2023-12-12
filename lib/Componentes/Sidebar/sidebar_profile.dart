@@ -5,7 +5,8 @@ class ProfileWidget extends StatelessWidget {
   final String name; // Nombre del usuario
   final String role; // Rol o posición
 
-  const ProfileWidget({super.key, 
+  const ProfileWidget({
+    super.key,
     required this.imageUrl,
     required this.name,
     required this.role,
@@ -18,7 +19,7 @@ class ProfileWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 40, // Tamaño del avatar
+          radius: 30, // Tamaño del avatar
           backgroundImage: NetworkImage(imageUrl), // Imagen del perfil
         ),
         const SizedBox(height: 8), // Espacio entre imagen y texto
