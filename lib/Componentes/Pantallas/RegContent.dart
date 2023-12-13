@@ -7,7 +7,7 @@ import 'package:frontend/Componentes/Grid/CardItem.dart';
 
 class RegContent extends StatelessWidget {
   final String title;
-  final List<CardItem> institutions;
+  final List<Widget> institutions;
   final VoidCallback? onCreateNewPressed;
   final bool isEstablishmentPage; // Variable final
   final VoidCallback? onHelpPressed;

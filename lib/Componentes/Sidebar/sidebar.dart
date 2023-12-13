@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Componentes/Grid/CardItem.dart';
+import 'package:frontend/Componentes/Pantallas/FutureContent.dart';
 import 'package:frontend/Componentes/Pantallas/RegContent.dart';
 import 'package:frontend/LoginPage.dart';
 import 'package:frontend/NavPages/EstablismentReg.dart';
@@ -114,15 +115,19 @@ class CustomDrawer extends StatelessWidget {
               // ... tus ListTiles para Establecimientos, Modelos Predictivos, etc. ...
               ListTile(
                 title: const Text('Establecimientos'),
-                onTap: () {
+                onTap: () async {
+                  List<CardItem> institutions =
+                      await getInstitutionsFromFirestore();
                   onSelectContent(RegContent(
+                    institutions: institutions,
                     title: 'Establecimientos',
                     isEstablishmentPage: true,
                     onHelpPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InstitutionsWiki()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => InstitutionsWiki()),
+                      );
                     },
                     onCreateNewPressed: () {
                       Navigator.push(
@@ -132,57 +137,58 @@ class CustomDrawer extends StatelessWidget {
                                 EstablishmentRegistrationForm()),
                       );
                     },
-                    institutions: institutions1,
                     key: const ValueKey('establecimientos'),
                   ));
                 },
               ),
-              ListTile(
-                title: const Text('Modelos Predictivos'),
-                onTap: () {
-                  onSelectContent(
-                    RegContent(
-                      title: 'Modelos Predictivos',
-                      onHelpPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ModelsWiki()),
-                        );
-                      },
-                      institutions: institutions2,
-                      key: const ValueKey('regContent'),
-                    ),
-                  );
-                },
-              ),
-              // ... otros ListTiles para diferentes contenidos ...
-              ListTile(
-                title: const Text('Reportes'),
-                onTap: () {
-                  onSelectContent(
-                    RegContent(
-                      onHelpPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReportsWiki()),
-                        );
-                      },
-                      isEstablishmentPage: true,
-                      onCreateNewPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ReportMakerForm()),
-                        );
-                      },
-                      title: 'Reportes',
-                      institutions: institutions2,
-                      key: const ValueKey('reportes'),
-                    ),
-                  );
-                },
-              ),
+
+              // ),
+              // ListTile(
+              //   title: const Text('Modelos Predictivos'),
+              //   onTap: () {
+              //     onSelectContent(
+              //       RegContent(
+              //         title: 'Modelos Predictivos',
+              //         onHelpPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(builder: (context) => ModelsWiki()),
+              //           );
+              //         },
+              //         institutions: institutions2,
+              //         key: const ValueKey('regContent'),
+              //       ),
+              //     );
+              //   },
+              // ),
+              // // ... otros ListTiles para diferentes contenidos ...
+              // ListTile(
+              //   title: const Text('Reportes'),
+              //   onTap: () {
+              //     onSelectContent(
+              //       RegContent(
+              //         onHelpPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => ReportsWiki()),
+              //           );
+              //         },
+              //         isEstablishmentPage: true,
+              //         onCreateNewPressed: () {
+              //           Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => ReportMakerForm()),
+              //           );
+              //         },
+              //         title: 'Reportes',
+              //         institutions: institutions2,
+              //         key: const ValueKey('reportes'),
+              //       ),
+              //     );
+              //   },
+              // ),
             ]),
           ),
           Container(
@@ -216,5 +222,26 @@ class CustomDrawer extends StatelessWidget {
       return snapshot.data() as Map<String, dynamic>?;
     }
     return null;
+  }
+
+  Future<List<CardItem>> getInstitutionsFromFirestore() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('establecimientos').get();
+      return querySnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return CardItem(
+          title: data['title'],
+          imageUrl: data['imageUrl'],
+          creationDate: data['creationDate'],
+          author: data['author'],
+          description: data['description'],
+        );
+      }).toList();
+    } catch (e) {
+      // Manejar el error
+      print(e);
+      return [];
+    }
   }
 }
