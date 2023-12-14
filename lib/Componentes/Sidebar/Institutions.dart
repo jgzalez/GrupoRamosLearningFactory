@@ -55,31 +55,69 @@ class Establishment {
 
   factory Establishment.fromMap(Map<String, dynamic> data) {
     return Establishment(
-      title: data['title'],
-      name: data['name'],
-      author: data['author'],
-      description: data['description'],
-      imageUrl: data['imageUrl'],
-      creationDate: data['creationDate'],
-      geographicLocation: data['geographicLocation'],
-      numberOfEmployees: data['numberOfEmployees'],
-      businessHours: data['businessHours'],
-      establishmentSize: data['establishmentSize'],
-      customerFlow: data['customerFlow'],
-      typeOfEstablishment: data['typeOfEstablishment'],
-      maximumCapacity: data['maximumCapacity'],
-      foundationYear: data['foundationYear'],
-      customerRatings: data['customerRatings'],
-      numberOfReviews: data['numberOfReviews'],
-      salesHistory: data['salesHistory'],
-      customerDemographics: data['customerDemographics'],
-      annualRevenue: data['annualRevenue'],
-      operationalExpenses: data['operationalExpenses'],
-      specialEvents: data['specialEvents'],
-      inventoryOfProductsServices: data['inventoryOfProductsServices'],
-      seasonalFactorsImpact: data['seasonalFactorsImpact'],
-      localCompetition: data['localCompetition'],
-      marketTrends: data['marketTrends'],
+      title: data['title'] ?? 'Título predeterminado',
+      name: data['name'] ?? 'Nombre predeterminado',
+      author: data['author'] ?? 'Autor predeterminado',
+      description: data['description'] ?? 'Descripción predeterminada',
+      imageUrl: data['imageUrl'] ?? 'URL de imagen predeterminada',
+      creationDate: data['creationDate'] ?? 'Fecha predeterminada',
+      geographicLocation:
+          data['geographicLocation'] ?? 'Ubicación Geográfica predeterminada',
+      numberOfEmployees:
+          data['numberOfEmployees'] ?? 0, // Asumiendo que es un entero
+      businessHours:
+          data['businessHours'] ?? 'Horarios de negocios predeterminados',
+      establishmentSize: data['establishmentSize'] ??
+          'Tamaño del establecimiento predeterminado',
+      customerFlow: data['customerFlow'] ?? 'Flujo de clientes predeterminado',
+      typeOfEstablishment: data['typeOfEstablishment'] ??
+          'Tipo de establecimiento predeterminado',
+      maximumCapacity:
+          data['maximumCapacity'] ?? 0, // Asumiendo que es un entero
+      foundationYear:
+          data['foundationYear'] ?? 'Año de fundación predeterminado',
+      customerRatings: data['customerRatings'], // Puede ser nulo
+      numberOfReviews: data['numberOfReviews'], // Puede ser nulo
+      salesHistory: data['salesHistory'], // Puede ser nulo
+      customerDemographics: data['customerDemographics'], // Puede ser nulo
+      annualRevenue: data['annualRevenue'], // Puede ser nulo
+      operationalExpenses: data['operationalExpenses'], // Puede ser nulo
+      specialEvents: data['specialEvents'], // Puede ser nulo
+      inventoryOfProductsServices:
+          data['inventoryOfProductsServices'], // Puede ser nulo
+      seasonalFactorsImpact: data['seasonalFactorsImpact'], // Puede ser nulo
+      localCompetition: data['localCompetition'], // Puede ser nulo
+      marketTrends: data['marketTrends'], // Puede ser nulo
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'imageUrl': imageUrl,
+      'creationDate': creationDate,
+      'author': author,
+      'description': description,
+      'name': name,
+      'geographicLocation': geographicLocation,
+      'numberOfEmployees': numberOfEmployees,
+      'businessHours': businessHours,
+      'establishmentSize': establishmentSize,
+      'customerFlow': customerFlow,
+      'typeOfEstablishment': typeOfEstablishment,
+      'maximumCapacity': maximumCapacity,
+      'foundationYear': foundationYear,
+      'customerRatings': customerRatings,
+      'numberOfReviews': numberOfReviews,
+      'salesHistory': salesHistory,
+      'customerDemographics': customerDemographics,
+      'annualRevenue': annualRevenue,
+      'operationalExpenses': operationalExpenses,
+      'specialEvents': specialEvents,
+      'inventoryOfProductsServices': inventoryOfProductsServices,
+      'seasonalFactorsImpact': seasonalFactorsImpact,
+      'localCompetition': localCompetition,
+      'marketTrends': marketTrends,
+    };
   }
 }

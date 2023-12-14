@@ -19,7 +19,7 @@ class ProfileWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CircleAvatar(
-          radius: 30, // Tamaño del avatar
+          radius: 25, // Tamaño del avatar
           backgroundImage: NetworkImage(imageUrl), // Imagen del perfil
         ),
         const SizedBox(height: 8), // Espacio entre imagen y texto

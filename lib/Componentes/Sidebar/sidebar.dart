@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/Componentes/Grid/CardItem.dart';
+import 'package:frontend/Componentes/Grid/Card_Details.dart';
 import 'package:frontend/Componentes/Pantallas/FutureContent.dart';
 import 'package:frontend/Componentes/Pantallas/RegContent.dart';
+import 'package:frontend/Componentes/Sidebar/Institutions.dart';
 import 'package:frontend/LoginPage.dart';
 import 'package:frontend/NavPages/EstablismentReg.dart';
 import 'package:frontend/NavPages/ReportMakerForm.dart';
@@ -15,42 +17,6 @@ import 'sidebar_profile.dart';
 class CustomDrawer extends StatelessWidget {
   final Function(Widget) onSelectContent;
 
-  // Crear listas de CardItems
-  final List<CardItem> institutions1 = [
-    CardItem(
-        title: 'Institución 1',
-        imageUrl:
-            'https://cdn.pixabay.com/photo/2019/04/04/15/17/smartphone-4103051_640.jpg',
-        creationDate: '12-04-2023',
-        author: 'Jose Gonzalez',
-        description: 'Esta es una carta de prueba'),
-    CardItem(
-        title: 'Institución 2',
-        imageUrl:
-            'https://cdn.com.do/wp-content/uploads/2022/05/mozart-la-para-6272e269a17a6.jpg',
-        creationDate: '12-04-2023',
-        author: 'Jose Gonzalez',
-        description: 'Esta es una carta de prueba'),
-    // ... añade más CardItems ...
-  ];
-
-  final List<CardItem> institutions2 = [
-    CardItem(
-        title: 'Modelo 1',
-        imageUrl:
-            'https://media.istockphoto.com/id/530685719/es/foto/grupo-de-empresarios-de-pie-en-el-pasillo-sonriendo-y-hablando-juntos.webp?b=1&s=612x612&w=0&k=20&c=ysTsFXorWFgsCfxq-Y1qwJtQLUxWavFQ24tVI8ZNabg=',
-        creationDate: '12-04-2023',
-        author: 'Jose Gonzalez',
-        description: 'Esta es una carta de prueba'),
-    CardItem(
-        title: 'Modelo 2',
-        imageUrl:
-            'https://cdn.pixabay.com/photo/2018/06/17/20/35/chain-3481377_1280.jpg',
-        creationDate: '12-04-2023',
-        author: 'Jose Gonzalez',
-        description: 'Esta es una carta de prueba'),
-    // ... añade más CardItems ...
-  ];
   CustomDrawer({super.key, required this.onSelectContent});
 
   Future<void> _logout(BuildContext context) async {
@@ -117,7 +83,7 @@ class CustomDrawer extends StatelessWidget {
                 title: const Text('Establecimientos'),
                 onTap: () async {
                   List<CardItem> institutions =
-                      await getInstitutionsFromFirestore();
+                      await getInstitutionsFromFirestore(context);
                   onSelectContent(RegContent(
                     institutions: institutions,
                     title: 'Establecimientos',
@@ -224,14 +190,24 @@ class CustomDrawer extends StatelessWidget {
     return null;
   }
 
-  Future<List<CardItem>> getInstitutionsFromFirestore() async {
+  Future<List<CardItem>> getInstitutionsFromFirestore(
+      BuildContext context) async {
     try {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection('establecimientos').get();
       return querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        Establishment establishment = Establishment.fromMap(data);
         return CardItem(
           title: data['title'],
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    EstablishmentDetailsPage(establishment: establishment),
+              ),
+            );
+          },
           imageUrl: data['imageUrl'],
           creationDate: data['creationDate'],
           author: data['author'],
