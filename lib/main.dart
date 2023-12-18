@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 // import 'package:frontend/LoginPage.dart';
 import 'firebase_options.dart'; // Asegúrate de que esta línea esté presente y sea correcta
-import 'Componentes/Sidebar/sidebar.dart';
+import 'Vistas/Componentes/Sidebar/sidebar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          primaryColor: Colors.blue, // Color primario
+          hintColor:
+              Color.fromARGB(255, 19, 26, 96)), // Color secundario o de acento
+
       title: 'Flutter Demo',
       home:
           MyHomePage(), // Ensure you have a 'home' or properly set up 'routes'.

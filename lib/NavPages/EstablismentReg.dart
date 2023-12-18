@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:frontend/Componentes/Sidebar/Establishment.dart'; // Asegúrate de que este import es correcto
+import 'package:frontend/Vistas/Componentes/Sidebar/Establishment.dart'; // Asegúrate de que este import es correcto
 
 class EstablishmentRegistrationForm extends StatefulWidget {
   final Establishment? establishmentToEdit;

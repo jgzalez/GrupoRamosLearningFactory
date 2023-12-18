@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/Componentes/Grid/CardItem.dart';
-import 'package:frontend/Componentes/Grid/Card_Details.dart';
-import 'package:frontend/Componentes/Pantallas/FutureContent.dart';
-import 'package:frontend/Componentes/Pantallas/RegContent.dart';
-import 'package:frontend/Componentes/Sidebar/Establishment.dart';
+import 'package:frontend/Vistas/Data%20Display/Grid/CardItem.dart';
+import 'package:frontend/Vistas/Data%20Display/Grid/Card_Details.dart';
+import 'package:frontend/Vistas/Componentes/Pantallas/FutureContent.dart';
+import 'package:frontend/Vistas/Componentes/Pantallas/RegContent.dart';
+import 'package:frontend/Vistas/Componentes/Sidebar/Establishment.dart';
 import 'package:frontend/LoginPage.dart';
 import 'package:frontend/NavPages/EstablismentReg.dart';
 import 'package:frontend/NavPages/ReportMakerForm.dart';

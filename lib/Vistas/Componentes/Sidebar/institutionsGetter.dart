@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:frontend/Componentes/Sidebar/Establishment.dart';
+import 'package:frontend/Vistas/Componentes/Sidebar/Establishment.dart';
 
 Future<List<Establishment>> getInstitutions() async {
   QuerySnapshot querySnapshot =
