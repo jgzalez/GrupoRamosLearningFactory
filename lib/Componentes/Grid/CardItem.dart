@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/Componentes/Sidebar/Establishment.dart';
-import 'package:frontend/NavPages/EstablismentReg.dart';
 
 class CardItem extends StatelessWidget {
   final String imageUrl;

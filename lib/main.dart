@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/LoginPage.dart';
+// import 'package:frontend/LoginPage.dart';
 import 'firebase_options.dart'; // Asegúrate de que esta línea esté presente y sea correcta
 import 'Componentes/Sidebar/sidebar.dart';
 

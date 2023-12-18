@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Componentes/Grid/CardItem.dart'; // Asegúrate de que la ruta sea correcta
 
 class GridBuilderWidget extends StatelessWidget {
   final List<Widget> items;
