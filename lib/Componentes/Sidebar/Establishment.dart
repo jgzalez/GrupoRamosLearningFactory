@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Establishment {
+  final String id;
   final String title;
   final String imageUrl;
   final String creationDate;
@@ -26,6 +29,7 @@ class Establishment {
   final String? marketTrends; // Archivo
 
   Establishment({
+    required this.id,
     required this.title,
     required this.author,
     required this.creationDate,
@@ -53,8 +57,10 @@ class Establishment {
     this.marketTrends,
   });
 
-  factory Establishment.fromMap(Map<String, dynamic> data) {
+  factory Establishment.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Establishment(
+      id: doc.id,
       title: data['title'] ?? 'Título predeterminado',
       name: data['name'] ?? 'Nombre predeterminado',
       author: data['author'] ?? 'Autor predeterminado',

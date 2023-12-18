@@ -5,7 +5,7 @@ import 'package:frontend/Componentes/Grid/CardItem.dart';
 import 'package:frontend/Componentes/Grid/Card_Details.dart';
 import 'package:frontend/Componentes/Pantallas/FutureContent.dart';
 import 'package:frontend/Componentes/Pantallas/RegContent.dart';
-import 'package:frontend/Componentes/Sidebar/Institutions.dart';
+import 'package:frontend/Componentes/Sidebar/Establishment.dart';
 import 'package:frontend/LoginPage.dart';
 import 'package:frontend/NavPages/EstablismentReg.dart';
 import 'package:frontend/NavPages/ReportMakerForm.dart';
@@ -197,9 +197,11 @@ class CustomDrawer extends StatelessWidget {
           await FirebaseFirestore.instance.collection('establecimientos').get();
       return querySnapshot.docs.map((doc) {
         Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        Establishment establishment = Establishment.fromMap(data);
+        Establishment establishment = Establishment.fromFirestore(doc);
         return CardItem(
           title: data['title'],
+          onEdit: () => onEdit(context, establishment),
+          onDelete: () => onDelete(context, establishment),
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -220,4 +222,51 @@ class CustomDrawer extends StatelessWidget {
       return [];
     }
   }
+}
+
+void onEdit(BuildContext context, Establishment establishment) {
+  // Navega a una pantalla de edición con los datos del establecimiento
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => EstablishmentRegistrationForm(
+        establishmentToEdit: establishment,
+      ),
+    ),
+  );
+}
+
+void onDelete(BuildContext context, Establishment establishment) {
+  // Muestra un diálogo de confirmación antes de proceder con la eliminación
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Confirmar eliminación'),
+        content:
+            Text('¿Estás seguro de que deseas eliminar este establecimiento?'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancelar'),
+            onPressed: () {
+              Navigator.of(context).pop(); // Cierra el diálogo
+            },
+          ),
+          TextButton(
+            child: Text('Eliminar'),
+            onPressed: () {
+              // Elimina el establecimiento de Firestore
+              deleteEstablishmentFromFirestore(establishment.id);
+              Navigator.of(context).pop(); // Cierra el diálogo
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void deleteEstablishmentFromFirestore(String id) {
+  // Lógica para eliminar el establecimiento de Firestore
+  FirebaseFirestore.instance.collection('establecimientos').doc(id).delete();
+  // Considera implementar alguna lógica para refrescar la lista de establecimientos
 }

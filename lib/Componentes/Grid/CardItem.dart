@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/Componentes/Sidebar/Establishment.dart';
+import 'package:frontend/NavPages/EstablismentReg.dart';
 
 class CardItem extends StatelessWidget {
   final String imageUrl;
@@ -7,6 +10,8 @@ class CardItem extends StatelessWidget {
   final String author;
   final String description;
   final VoidCallback onTap;
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
 
   CardItem({
     required this.onTap,
@@ -15,6 +20,8 @@ class CardItem extends StatelessWidget {
     required this.creationDate,
     required this.author,
     required this.description,
+    required this.onEdit,
+    required this.onDelete,
   });
 
   @override
@@ -26,10 +33,37 @@ class CardItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Image.network(
-              imageUrl,
-              fit: BoxFit.cover,
-              height: 150.0,
+            Stack(
+              children: [
+                Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  height: 150.0,
+                ),
+                Positioned(
+                  right: 0,
+                  child: PopupMenuButton<String>(
+                    onSelected: (String result) {
+                      if (result == 'edit') {
+                        onEdit();
+                      } else if (result == 'delete') {
+                        onDelete();
+                      }
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        value: 'edit',
+                        child: Text('Editar'),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'delete',
+                        child: Text('Borrar'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             Padding(
               padding: EdgeInsets.all(8.0),

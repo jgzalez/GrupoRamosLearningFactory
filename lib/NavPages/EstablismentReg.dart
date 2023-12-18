@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:frontend/Componentes/Sidebar/Institutions.dart'; // Asegúrate de que este import es correcto
+import 'package:frontend/Componentes/Sidebar/Establishment.dart'; // Asegúrate de que este import es correcto
 
 class EstablishmentRegistrationForm extends StatefulWidget {
   final Establishment? establishmentToEdit;
@@ -206,6 +206,7 @@ class _EstablishmentRegistrationFormState
     if (_formKey.currentState!.validate()) {
       // Aquí se recopilan los datos de los controladores de texto
       final establishmentData = Establishment(
+          id: '',
           title: _titleController.text,
           name: _nameController.text,
           imageUrl: _imageController.text,
@@ -230,13 +231,41 @@ class _EstablishmentRegistrationFormState
       // Lógica para guardar 'establishmentData' en la base de datos
       // Por ejemplo, usando Firestore
       try {
-        await FirebaseFirestore.instance
-            .collection('establecimientos')
-            .add(establishmentData.toMap());
-        // Mostrar mensaje de éxito o navegar a otra pantalla
+        if (widget.establishmentToEdit == null) {
+          // Crear un nuevo establecimiento
+          await FirebaseFirestore.instance
+              .collection('establecimientos')
+              .add(establishmentData.toMap());
+          // Mostrar mensaje de éxito o realizar acciones después de la creación
+        } else {
+          final updatedEstablishment = Establishment(
+              id: widget.establishmentToEdit!.id, // Usa el 'id' existente
+              title: _titleController.text,
+              name: _nameController.text,
+              imageUrl: _imageController.text,
+              geographicLocation: _locationController.text,
+              author: _authorController.text,
+              creationDate: _creationDateController.text,
+              description: _descriptionController.text,
+              numberOfEmployees:
+                  int.tryParse(_employeeCountController.text) ?? 0,
+              businessHours: _operatingHoursController.text,
+              establishmentSize: _sizeController.text,
+              customerFlow: _customerFlowController.text,
+              typeOfEstablishment: _establishmentTypeController.text,
+              maximumCapacity: int.tryParse(_maxCapacityController.text) ?? 0,
+              foundationYear: _foundationYearController.text);
+          // Actualizar un establecimiento existente
+          await FirebaseFirestore.instance
+              .collection('establecimientos')
+              .doc(updatedEstablishment
+                  .id) // Asegúrate de tener un 'id' en Establishment
+              .update(establishmentData.toMap());
+          // Mostrar mensaje de éxito o realizar acciones después de la edición
+        }
       } catch (e) {
-        // Manejar errores, por ejemplo, mostrar un mensaje
-        print(e);
+        // Manejar errores
+        print('Ocurrió un error: $e');
       }
     }
   }
