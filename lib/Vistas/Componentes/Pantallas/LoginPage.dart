@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:frontend/Vistas/my_Home_Page.dart';
 
-import 'main.dart';
+import '../../../main.dart';
 
 class LoginScreen extends StatelessWidget {
   // Controladores para los campos de texto

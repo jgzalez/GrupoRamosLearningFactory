@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Vistas/Componentes/Sidebar/Establishment.dart';
+import 'package:frontend/Modelos/Establishment.dart';
 
 class EstablishmentDetailsPage extends StatelessWidget {
   final Establishment establishment;

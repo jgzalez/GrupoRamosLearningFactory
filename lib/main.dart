@@ -1,8 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:frontend/LoginPage.dart';
-import 'firebase_options.dart'; // Asegúrate de que esta línea esté presente y sea correcta
-import 'Vistas/Componentes/Sidebar/sidebar.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:frontend/Vistas/my_Home_Page.dart';
+import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,52 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          primaryColor: Colors.blue, // Color primario
-          hintColor:
-              Color.fromARGB(255, 19, 26, 96)), // Color secundario o de acento
-
       title: 'Flutter Demo',
-      home:
-          MyHomePage(), // Ensure you have a 'home' or properly set up 'routes'.
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  Widget _contentWidget =
-      Center(child: Text('Contenido Principal')); // Contenido por defecto
-
-  void _changeContent(Widget newContentWidget) {
-    if (_contentWidget.key != newContentWidget.key) {
-      setState(() {
-        _contentWidget = newContentWidget;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: CustomDrawer(onSelectContent: _changeContent),
-          ),
-          Expanded(
-            flex: 8,
-            child: _contentWidget,
-          ),
-        ],
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        hintColor: Color.fromARGB(255, 19, 26, 96),
       ),
+      home: MyHomePage(),
     );
   }
 }

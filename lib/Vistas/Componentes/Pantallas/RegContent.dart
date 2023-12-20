@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Vistas/Componentes/Barra%20Inferior/BottomBar.dart';
-import 'package:frontend/Vistas/Data%20Display/Grid/BuildGrid.dart';
+import 'package:frontend/Vistas/Componentes/Grid/BuildGrid.dart';
 import 'package:frontend/Vistas/Componentes/Barra%20Superior/CreateNewButton.dart';
 import 'package:frontend/Vistas/Componentes/Barra%20Superior/TitleBar.dart';
 

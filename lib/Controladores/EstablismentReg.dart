@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:frontend/Vistas/Componentes/Sidebar/Establishment.dart'; // Asegúrate de que este import es correcto
+import 'package:frontend/Modelos/Establishment.dart'; // Asegúrate de que este import es correcto
 
 class EstablishmentRegistrationForm extends StatefulWidget {
   final Establishment? establishmentToEdit;
@@ -237,6 +237,7 @@ class _EstablishmentRegistrationFormState
               .collection('establecimientos')
               .add(establishmentData.toMap());
           // Mostrar mensaje de éxito o realizar acciones después de la creación
+          Navigator.pop(context, true);
         } else {
           final updatedEstablishment = Establishment(
               id: widget.establishmentToEdit!.id, // Usa el 'id' existente
@@ -262,6 +263,7 @@ class _EstablishmentRegistrationFormState
                   .id) // Asegúrate de tener un 'id' en Establishment
               .update(establishmentData.toMap());
           // Mostrar mensaje de éxito o realizar acciones después de la edición
+          Navigator.pop(context, true);
         }
       } catch (e) {
         // Manejar errores
