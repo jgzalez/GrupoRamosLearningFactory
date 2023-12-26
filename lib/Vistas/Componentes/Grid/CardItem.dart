@@ -24,6 +24,12 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String effectiveImageUrl =
+        imageUrl.isNotEmpty ? imageUrl : 'url_de_la_imagen_predeterminada';
+
+    // Determinar el tamaño de la pantalla
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return InkWell(
       onTap: onTap,
       child: Card(
@@ -31,40 +37,16 @@ class CardItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Stack(
-              children: [
-                Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                  height: 150.0,
-                ),
-                Positioned(
-                  right: 0,
-                  child: PopupMenuButton<String>(
-                    onSelected: (String result) {
-                      if (result == 'edit') {
-                        onEdit();
-                      } else if (result == 'delete') {
-                        onDelete();
-                      }
-                    },
-                    itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<String>>[
-                      const PopupMenuItem<String>(
-                        value: 'edit',
-                        child: Text('Editar'),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'delete',
-                        child: Text('Borrar'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+            Image.network(
+              effectiveImageUrl,
+              fit: BoxFit.cover,
+              height: screenWidth *
+                  0.1, // Altura proporcional al ancho de la pantalla
+              width: double.infinity,
             ),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding:
+                  EdgeInsets.all(screenWidth * 0.01), // Padding proporcional
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -72,23 +54,24 @@ class CardItem extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
+                      fontSize:
+                          screenWidth * 0.025, // Tamaño de texto proporcional
                     ),
                   ),
+                  SizedBox(height: screenWidth * 0.01),
                   Text(
                     '$creationDate - $author',
                     style: TextStyle(
-                      fontSize: 12.0,
+                      fontSize: screenWidth * 0.01,
                       color: Colors.grey[600],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      description,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  SizedBox(height: screenWidth * 0.01),
+                  Text(
+                    description,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: screenWidth * 0.01),
                   ),
                 ],
               ),

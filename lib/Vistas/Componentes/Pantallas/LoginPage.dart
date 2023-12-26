@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:frontend/Vistas/my_Home_Page.dart';
 
-import '../../../main.dart';
-
 class LoginScreen extends StatelessWidget {
   // Controladores para los campos de texto
   final TextEditingController _emailController = TextEditingController();

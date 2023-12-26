@@ -10,7 +10,7 @@ class GridBuilderWidget extends StatelessWidget {
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4, // Número de elementos en el eje transversal
-        childAspectRatio: 0.8, // Relación de aspecto de los hijos
+        childAspectRatio: 1.15, // Relación de aspecto de los hijos
         crossAxisSpacing: 10, // Espaciado horizontal entre los elementos
         mainAxisSpacing: 10, // Espaciado vertical entre los elementos
       ),

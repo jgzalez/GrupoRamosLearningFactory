@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:frontend/Vistas/Componentes/Pantallas/LoginPage.dart';
 import 'package:frontend/Vistas/my_Home_Page.dart';
 import 'firebase_options.dart';
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue,
         hintColor: Color.fromARGB(255, 19, 26, 96),
       ),
-      home: MyHomePage(),
+      home: LoginScreen(),
     );
   }
 }

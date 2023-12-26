@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Establishment {
@@ -16,7 +18,7 @@ class Establishment {
   final String typeOfEstablishment;
   final int maximumCapacity;
   final String foundationYear;
-  final String? customerRatings; // Archivo
+  var customerRatings; // Archivo
   final int? numberOfReviews; // Archivo
   final String? salesHistory; // Archivo
   final String? customerDemographics; // Archivo
@@ -26,7 +28,7 @@ class Establishment {
   final String? inventoryOfProductsServices; // Archivo
   final String? seasonalFactorsImpact; // Archivo
   final String? localCompetition; // Archivo
-  final String? marketTrends; // Archivo
+  final String? marketTrends;
 
   Establishment({
     required this.id,

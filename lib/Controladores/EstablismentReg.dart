@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart'; // Añadir para cargar archivos
 import 'package:file_picker/file_picker.dart';
 import 'package:frontend/Modelos/Establishment.dart'; // Asegúrate de que este import es correcto
 
@@ -39,6 +43,39 @@ class _EstablishmentRegistrationFormState
   final TextEditingController _foundationYearController =
       TextEditingController();
   // ... otros controladores de texto para cada atributo
+
+  Future<void> _uploadFilesToFirebaseStorage() async {
+    for (var entry in _selectedFiles.entries) {
+      final file = entry.value;
+
+      // Ruta en Firebase Storage
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('uploads/${entry.key}/${file.name}');
+
+      try {
+        if (kIsWeb) {
+          // Para la web, usa 'bytes' ya que 'path' es null
+          Uint8List? fileBytes = file.bytes;
+          if (fileBytes != null) {
+            await ref.putData(fileBytes);
+          }
+        } else {
+          // Para plataformas móviles, utiliza 'File' con 'path'
+          if (file.path != null) {
+            await ref.putFile(File(file.path!));
+          }
+        }
+
+        // Obtener y almacenar la URL del archivo subido
+        final fileUrl = await ref.getDownloadURL();
+        // Actualiza los datos del establecimiento con la URL del archivo
+        // Por ejemplo: establishmentData.customerRatings = fileUrl; (ajusta según tus necesidades)
+      } catch (e) {
+        print('Error al subir archivo: $e');
+      }
+    }
+  }
 
   // Variables para guardar los archivos seleccionados
   Map<String, PlatformFile> _selectedFiles = {};
@@ -206,33 +243,37 @@ class _EstablishmentRegistrationFormState
     if (_formKey.currentState!.validate()) {
       // Aquí se recopilan los datos de los controladores de texto
       final establishmentData = Establishment(
-          id: '',
-          title: _titleController.text,
-          name: _nameController.text,
-          imageUrl: _imageController.text,
-          geographicLocation: _locationController.text,
-          author: _authorController.text,
-          creationDate: _creationDateController.text,
-          description: _descriptionController.text,
-          numberOfEmployees: int.tryParse(_employeeCountController.text) ?? 0,
-          businessHours: _operatingHoursController.text,
-          establishmentSize: _sizeController.text,
-          customerFlow: _customerFlowController.text,
-          typeOfEstablishment: _establishmentTypeController.text,
-          maximumCapacity: int.tryParse(_maxCapacityController.text) ?? 0,
-          foundationYear: _foundationYearController.text
+        id: '',
+        title: _titleController.text,
+        name: _nameController.text,
+        imageUrl: _imageController.text,
+        geographicLocation: _locationController.text,
+        author: _authorController.text,
+        creationDate: _creationDateController.text,
+        description: _descriptionController.text,
+        numberOfEmployees: int.tryParse(_employeeCountController.text) ?? 0,
+        businessHours: _operatingHoursController.text,
+        establishmentSize: _sizeController.text,
+        customerFlow: _customerFlowController.text,
+        typeOfEstablishment: _establishmentTypeController.text,
+        maximumCapacity: int.tryParse(_maxCapacityController.text) ?? 0,
+        foundationYear: _foundationYearController.text,
 
-          // ... otros campos ...
-          );
+        // ... otros campos ...
+      );
 
-      // Lógica para manejar los archivos, si es necesario
-      // Por ejemplo, subir archivos a un servidor y obtener URLs
-
-      // Lógica para guardar 'establishmentData' en la base de datos
-      // Por ejemplo, usando Firestore
       try {
+        await _uploadFilesToFirebaseStorage(); // Subir archivos antes de guardar los datos
+
+        // Lógica para manejar los archivos, si es necesario
+        // Por ejemplo, subir archivos a un servidor y obtener URLs
+
+        // Lógica para guardar 'establishmentData' en la base de datos
+        // Por ejemplo, usando Firestore
+
         if (widget.establishmentToEdit == null) {
           // Crear un nuevo establecimiento
+
           await FirebaseFirestore.instance
               .collection('establecimientos')
               .add(establishmentData.toMap());
@@ -256,6 +297,7 @@ class _EstablishmentRegistrationFormState
               typeOfEstablishment: _establishmentTypeController.text,
               maximumCapacity: int.tryParse(_maxCapacityController.text) ?? 0,
               foundationYear: _foundationYearController.text);
+
           // Actualizar un establecimiento existente
           await FirebaseFirestore.instance
               .collection('establecimientos')
