@@ -19,16 +19,16 @@ class Establishment {
   final int maximumCapacity;
   final String foundationYear;
   var customerRatings; // Archivo
-  final int? numberOfReviews; // Archivo
-  final String? salesHistory; // Archivo
-  final String? customerDemographics; // Archivo
-  final String? annualRevenue; // Archivo
-  final String? operationalExpenses; // Archivo
-  final String? specialEvents; // Archivo
-  final String? inventoryOfProductsServices; // Archivo
-  final String? seasonalFactorsImpact; // Archivo
-  final String? localCompetition; // Archivo
-  final String? marketTrends;
+  var numberOfReviews; // Archivo
+  var salesHistory; // Archivo
+  var customerDemographics; // Archivo
+  var annualRevenue; // Archivo
+  var operationalExpenses; // Archivo
+  var specialEvents; // Archivo
+  var inventoryOfProductsServices; // Archivo
+  var seasonalFactorsImpact; // Archivo
+  var localCompetition; // Archivo
+  var marketTrends;
 
   Establishment({
     required this.id,

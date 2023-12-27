@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Controladores/authService.dart';
 import 'package:frontend/Vistas/Componentes/Pantallas/EstablishmentPage.dart';
+import 'package:frontend/Vistas/Componentes/Pantallas/LoginPage.dart';
+import 'package:frontend/Vistas/Componentes/Pantallas/ModelsPage.dart'; // Asegúrate de que esta ruta sea correcta
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -40,28 +42,38 @@ class _MyHomePageState extends State<MyHomePage> {
     String name = userData?['name'] ?? 'Nombre no disponible';
     String role = userData?['role'] ?? 'Rol no disponible';
 
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          CircleAvatar(
-            backgroundImage: NetworkImage(imageUrl),
-            radius: 50.0,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                  backgroundImage: NetworkImage(imageUrl),
+                  radius: 50.0,
+                  backgroundColor: Colors.transparent,
+                ),
+                SizedBox(height: 10),
+                Text(name,
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Text(role, style: TextStyle(fontSize: 16, color: Colors.grey)),
+                Divider(),
+                _buildButtonBar(),
+              ],
+            ),
           ),
-          SizedBox(height: 10),
-          Text(name,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-          Text(role, style: TextStyle(fontSize: 16, color: Colors.grey)),
-          Divider(),
-          _buildButtonBar(),
-        ],
-      ),
+        ),
+        _buildLogoutButton(),
+      ],
     );
   }
 
   Widget _buildButtonBar() {
     return ButtonBar(
-      alignment: MainAxisAlignment.center,
+      alignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         _buildSquareButton('Establecimientos', Icons.business),
         _buildSquareButton('Modelos', Icons.analytics),
@@ -70,10 +82,32 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget _buildLogoutButton() {
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: OutlinedButton(
+        onPressed: () {
+          // Aquí implementas la lógica para cerrar sesión
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (context) =>
+                    LoginScreen()), // Asegúrate de que esta ruta sea correcta
+            (Route<dynamic> route) => false,
+          );
+        },
+        child: Text('Cerrar Sesión'),
+      ),
+    );
+  }
+
   void _onButtonPressed(String title, BuildContext context) {
     if (title == 'Establecimientos') {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => EstablishmentsPage()),
+      );
+    } else if (title == 'Modelos') {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => ModelsPage()),
       );
     }
     // Implementa casos similares para otros botones si es necesario

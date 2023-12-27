@@ -1,4 +1,3 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class CardItem extends StatelessWidget {
@@ -26,8 +25,6 @@ class CardItem extends StatelessWidget {
   Widget build(BuildContext context) {
     String effectiveImageUrl =
         imageUrl.isNotEmpty ? imageUrl : 'url_de_la_imagen_predeterminada';
-
-    // Determinar el tamaño de la pantalla
     double screenWidth = MediaQuery.of(context).size.width;
 
     return InkWell(
@@ -37,16 +34,43 @@ class CardItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Image.network(
-              effectiveImageUrl,
-              fit: BoxFit.cover,
-              height: screenWidth *
-                  0.1, // Altura proporcional al ancho de la pantalla
-              width: double.infinity,
+            Stack(
+              children: [
+                Image.network(
+                  effectiveImageUrl,
+                  fit: BoxFit.cover,
+                  height:
+                      screenWidth * 0.1, // Height proportional to screen width
+                  width: double.infinity,
+                ),
+                Positioned(
+                  top: 4,
+                  right: 4,
+                  child: PopupMenuButton<String>(
+                    onSelected: (String result) {
+                      if (result == 'edit') {
+                        onEdit();
+                      } else if (result == 'delete') {
+                        onDelete();
+                      }
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                      const PopupMenuItem<String>(
+                        value: 'edit',
+                        child: Text('Editar'),
+                      ),
+                      const PopupMenuItem<String>(
+                        value: 'delete',
+                        child: Text('Borrar'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             Padding(
-              padding:
-                  EdgeInsets.all(screenWidth * 0.01), // Padding proporcional
+              padding: EdgeInsets.all(screenWidth * 0.01),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -54,8 +78,7 @@ class CardItem extends StatelessWidget {
                     title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize:
-                          screenWidth * 0.025, // Tamaño de texto proporcional
+                      fontSize: screenWidth * 0.025,
                     ),
                   ),
                   SizedBox(height: screenWidth * 0.01),

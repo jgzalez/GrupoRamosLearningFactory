@@ -35,7 +35,9 @@ class RegContent extends StatelessWidget {
           TitleBarWidget(title: title),
           const SizedBox(height: 16.0),
           const Divider(),
-          CreateNewButton(onPressed: onCreateNewPressed),
+          isEstablishmentPage
+              ? CreateNewButton(onPressed: onCreateNewPressed)
+              : Container(),
           const SizedBox(height: 8.0),
           Expanded(child: GridBuilderWidget(items: institutions)),
           BottomBar(

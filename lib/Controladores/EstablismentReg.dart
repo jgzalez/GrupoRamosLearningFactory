@@ -44,33 +44,45 @@ class _EstablishmentRegistrationFormState
       TextEditingController();
   // ... otros controladores de texto para cada atributo
 
-  Future<void> _uploadFilesToFirebaseStorage() async {
+  Future<void> _uploadFilesToFirebaseStorage(
+      Establishment establishmentData) async {
     for (var entry in _selectedFiles.entries) {
       final file = entry.value;
-
-      // Ruta en Firebase Storage
       final ref = FirebaseStorage.instance
           .ref()
           .child('uploads/${entry.key}/${file.name}');
 
       try {
+        String fileUrl;
         if (kIsWeb) {
-          // Para la web, usa 'bytes' ya que 'path' es null
           Uint8List? fileBytes = file.bytes;
           if (fileBytes != null) {
             await ref.putData(fileBytes);
           }
         } else {
-          // Para plataformas móviles, utiliza 'File' con 'path'
           if (file.path != null) {
             await ref.putFile(File(file.path!));
           }
         }
+        fileUrl = await ref.getDownloadURL();
 
-        // Obtener y almacenar la URL del archivo subido
-        final fileUrl = await ref.getDownloadURL();
-        // Actualiza los datos del establecimiento con la URL del archivo
-        // Por ejemplo: establishmentData.customerRatings = fileUrl; (ajusta según tus necesidades)
+        // Asignar la URL al campo correspondiente en 'establishmentData'
+        switch (entry.key) {
+          case 'customerRatings':
+            establishmentData.customerRatings = fileUrl;
+            break;
+          case 'numberOfReviews':
+            establishmentData.numberOfReviews = fileUrl;
+            break;
+          case 'salesHistory':
+            establishmentData.salesHistory = fileUrl;
+            break;
+          case 'customerDemographics':
+            establishmentData.customerDemographics = fileUrl;
+            break;
+
+          // ... casos para otros archivos ...
+        }
       } catch (e) {
         print('Error al subir archivo: $e');
       }
@@ -263,7 +275,8 @@ class _EstablishmentRegistrationFormState
       );
 
       try {
-        await _uploadFilesToFirebaseStorage(); // Subir archivos antes de guardar los datos
+        await _uploadFilesToFirebaseStorage(
+            establishmentData); // Subir archivos antes de guardar los datos
 
         // Lógica para manejar los archivos, si es necesario
         // Por ejemplo, subir archivos a un servidor y obtener URLs
