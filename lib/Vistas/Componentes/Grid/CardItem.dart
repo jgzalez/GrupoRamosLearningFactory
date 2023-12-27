@@ -7,8 +7,8 @@ class CardItem extends StatelessWidget {
   final String author;
   final String description;
   final VoidCallback onTap;
-  final VoidCallback onEdit;
-  final VoidCallback onDelete;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
   CardItem({
     required this.onTap,
@@ -17,8 +17,8 @@ class CardItem extends StatelessWidget {
     required this.creationDate,
     required this.author,
     required this.description,
-    required this.onEdit,
-    required this.onDelete,
+    this.onEdit,
+    this.onDelete,
   });
 
   @override
@@ -43,30 +43,33 @@ class CardItem extends StatelessWidget {
                       screenWidth * 0.1, // Height proportional to screen width
                   width: double.infinity,
                 ),
-                Positioned(
-                  top: 4,
-                  right: 4,
-                  child: PopupMenuButton<String>(
-                    onSelected: (String result) {
-                      if (result == 'edit') {
-                        onEdit();
-                      } else if (result == 'delete') {
-                        onDelete();
-                      }
-                    },
-                    itemBuilder: (BuildContext context) =>
-                        <PopupMenuEntry<String>>[
-                      const PopupMenuItem<String>(
-                        value: 'edit',
-                        child: Text('Editar'),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'delete',
-                        child: Text('Borrar'),
-                      ),
-                    ],
+                if (onEdit != null ||
+                    onDelete != null) // Sólo mostrar si son no nulos
+                  Positioned(
+                    right: 0,
+                    child: PopupMenuButton<String>(
+                      onSelected: (String result) {
+                        if (result == 'edit') {
+                          onEdit?.call();
+                        } else if (result == 'delete') {
+                          onDelete?.call();
+                        }
+                      },
+                      itemBuilder: (BuildContext context) =>
+                          <PopupMenuEntry<String>>[
+                        if (onEdit != null)
+                          const PopupMenuItem<String>(
+                            value: 'edit',
+                            child: Text('Editar'),
+                          ),
+                        if (onDelete != null)
+                          const PopupMenuItem<String>(
+                            value: 'delete',
+                            child: Text('Borrar'),
+                          ),
+                      ],
+                    ),
                   ),
-                ),
               ],
             ),
             Padding(

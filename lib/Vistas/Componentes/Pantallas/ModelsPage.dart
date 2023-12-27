@@ -25,6 +25,10 @@ class ModelsPage extends StatelessWidget {
           var models = snapshot.data!;
           return RegContent(
             title: 'Modelos',
+            onHelpPressed: () => {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: ((context) => ModelsWiki())))
+            },
             institutions: models
                 .map((model) => CardItem(
                       title: model.title,
@@ -33,8 +37,6 @@ class ModelsPage extends StatelessWidget {
                           : 'https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                       creationDate: model.creationDate,
                       author: model.author,
-                      onEdit: () => {},
-                      onDelete: () => {},
                       description: model.description,
                       onTap: () {
                         Navigator.of(context).push(
@@ -47,12 +49,6 @@ class ModelsPage extends StatelessWidget {
                     ))
                 .toList(),
             isEstablishmentPage: false,
-            onHelpPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ModelsWiki()),
-              );
-            },
           );
         },
       ),

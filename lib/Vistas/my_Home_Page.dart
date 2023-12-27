@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/Controladores/authService.dart';
 import 'package:frontend/Vistas/Componentes/Pantallas/EstablishmentPage.dart';
 import 'package:frontend/Vistas/Componentes/Pantallas/LoginPage.dart';
-import 'package:frontend/Vistas/Componentes/Pantallas/ModelsPage.dart'; // Asegúrate de que esta ruta sea correcta
+import 'package:frontend/Vistas/Componentes/Pantallas/ModelsPage.dart';
+import 'package:frontend/Vistas/Componentes/Pantallas/ReportsPage.dart'; // Asegúrate de que esta ruta sea correcta
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -108,6 +109,10 @@ class _MyHomePageState extends State<MyHomePage> {
     } else if (title == 'Modelos') {
       Navigator.of(context).push(
         MaterialPageRoute(builder: (context) => ModelsPage()),
+      );
+    } else if (title == 'Reportes') {
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => ReportsPage()),
       );
     }
     // Implementa casos similares para otros botones si es necesario
