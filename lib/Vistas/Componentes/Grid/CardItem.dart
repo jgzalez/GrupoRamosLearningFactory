@@ -39,8 +39,8 @@ class CardItem extends StatelessWidget {
                 Image.network(
                   effectiveImageUrl,
                   fit: BoxFit.cover,
-                  height:
-                      screenWidth * 0.1, // Height proportional to screen width
+                  height: screenWidth *
+                      0.075, // Height proportional to screen width
                   width: double.infinity,
                 ),
                 if (onEdit != null ||
