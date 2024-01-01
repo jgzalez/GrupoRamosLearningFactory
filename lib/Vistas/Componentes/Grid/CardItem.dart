@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CardItem extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final String creationDate;
+  final String? creationDate;
   final String author;
   final String description;
   final VoidCallback onTap;

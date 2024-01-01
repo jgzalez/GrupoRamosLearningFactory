@@ -16,14 +16,6 @@ class EstablishmentDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: SelectableText(establishment.title),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit),
-            onPressed: () {
-              // Navegar a la pantalla de edición o mostrar un diálogo de edición
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -18,40 +18,43 @@ class ModelDetailsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Descripción:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              // Imagen del modelo
+              Container(
+                width: double.infinity,
+                height: 200, // Ajusta la altura según necesites
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12), // Bordes redondeados
+                  image: DecorationImage(
+                    image: NetworkImage(model.imageUrl), // URL de la imagen
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-              SelectableText(model.description, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Text(
-                'Categoría:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(model.category, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Text(
-                'Fecha de Creación:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(model.creationDate,
-                  style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Text(
-                'Versión:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(model.version, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Text(
-                'Fecha de Actualización:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(model.updateDate, style: TextStyle(fontSize: 16)),
+              SizedBox(height: 16),
+              // Descripción y otros detalles
+              _buildDetailSection('Descripción:', model.description),
+              _buildDetailSection('Categoría:', model.category),
+              _buildDetailSection('Fecha de Creación:', model.creationDate),
+              _buildDetailSection('Versión:', model.version),
+              _buildDetailSection('Fecha de Actualización:', model.updateDate),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDetailSection(String title, String content) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        SelectableText(content, style: TextStyle(fontSize: 16)),
+        SizedBox(height: 10),
+      ],
     );
   }
 }

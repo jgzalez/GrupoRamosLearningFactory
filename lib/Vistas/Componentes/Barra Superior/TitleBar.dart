@@ -3,8 +3,10 @@ import 'package:frontend/Vistas/Componentes/Barra%20Superior/SearchField.dart';
 
 class TitleBarWidget extends StatelessWidget {
   final String title;
+  final Function(String) onSearch;
 
-  const TitleBarWidget({super.key, required this.title});
+  const TitleBarWidget(
+      {super.key, required this.title, required this.onSearch});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +19,10 @@ class TitleBarWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 10),
-        const Expanded(
-            child: SearchField()), // Ensure that SearchField widget is defined
+        Expanded(
+            child: SearchField(
+                onSearch:
+                    onSearch)), // Ensure that SearchField widget is defined
       ],
     );
   }

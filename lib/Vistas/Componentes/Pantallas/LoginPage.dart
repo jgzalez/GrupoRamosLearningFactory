@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:frontend/Vistas/Componentes/Pantallas/ForgotCredentials.dart';
 import 'package:frontend/Vistas/my_Home_Page.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -35,7 +36,30 @@ class LoginScreen extends StatelessWidget {
         );
       }
     } catch (e) {
-      print('Error al iniciar sesión: $e');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error de Inicio de Sesión'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  const Text('No se pudo iniciar sesión.'),
+                  Text('Detalle del error: $e'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Aceptar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -44,7 +68,10 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-            'Sistema de Optimización y Análisis de Recursos Humanos (SOARH)'),
+          'Sistema de Optimización y Análisis de Recursos Humanos (SOARH)',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -105,7 +132,12 @@ class LoginScreen extends StatelessWidget {
                       TextButton(
                         child: const Text('Olvidaste tus credenciales?'),
                         onPressed: () {
-                          // Acción para olvidar credenciales
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ForgotCredentialsScreen()),
+                          );
                         },
                       ),
                     ],

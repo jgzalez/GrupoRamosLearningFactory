@@ -51,10 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                CircleAvatar(
-                  backgroundImage: NetworkImage(imageUrl),
-                  radius: 50.0,
-                  backgroundColor: Colors.transparent,
+                ClipOval(
+                  child: Image.network(
+                    alignment: Alignment.center,
+                    imageUrl,
+                    width: 100.0,
+                    height: 100.0,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 SizedBox(height: 10),
                 Text(name,

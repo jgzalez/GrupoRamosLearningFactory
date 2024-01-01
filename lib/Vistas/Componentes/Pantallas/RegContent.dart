@@ -10,6 +10,7 @@ class RegContent extends StatelessWidget {
   final VoidCallback? onCreateNewPressed;
   final bool isEstablishmentPage; // Variable final
   final VoidCallback? onHelpPressed;
+  // final Function(String) onSearch; // Nuevo parámetro para la búsqueda
 
   const RegContent({
     Key? key,
@@ -32,7 +33,7 @@ class RegContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleBarWidget(title: title),
+          TitleBarWidget(title: title, onSearch: (_) {}),
           const SizedBox(height: 16.0),
           const Divider(),
           isEstablishmentPage
