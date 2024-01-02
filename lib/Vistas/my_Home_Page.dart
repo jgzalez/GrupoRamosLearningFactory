@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mi Página Principal'),
+        title: Text('Menú Principal'),
       ),
       body: _buildBody(),
     );

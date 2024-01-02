@@ -6,7 +6,30 @@ import 'package:frontend/Vistas/Componentes/Pantallas/ModelDetails.dart';
 import 'package:frontend/Vistas/Componentes/Pantallas/RegContent.dart';
 import 'package:frontend/Vistas/Wiki/ModelsWiki.dart';
 
-class ModelsPage extends StatelessWidget {
+class ModelsPage extends StatefulWidget {
+  @override
+  _ModelsPageState createState() => _ModelsPageState();
+}
+
+class _ModelsPageState extends State<ModelsPage> {
+  final TextEditingController searchController = TextEditingController();
+
+  String searchQuery = "";
+
+  void _performSearch() {
+    setState(() {
+      searchQuery = searchController.text.toLowerCase();
+    });
+  }
+
+  Stream<List<Model>> getModelsStream() {
+    return FirebaseFirestore.instance.collection('modelos').snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((doc) => Model.fromFirestore(doc))
+            .where((model) => model.title.toLowerCase().contains(searchQuery))
+            .toList());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +47,10 @@ class ModelsPage extends StatelessWidget {
           }
           var models = snapshot.data!;
           return RegContent(
+            searchController: searchController, // Agrega esta línea
+
             title: 'Modelos',
+            onSearch: _performSearch,
             onHelpPressed: () => {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: ((context) => ModelsWiki())))
@@ -53,17 +79,5 @@ class ModelsPage extends StatelessWidget {
         },
       ),
     );
-  }
-
-  Stream<List<Model>> getModelsStream() {
-    return FirebaseFirestore.instance
-        .collection('modelos')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return Model.fromFirestore(doc);
-      }).toList();
-    });
   }
 }

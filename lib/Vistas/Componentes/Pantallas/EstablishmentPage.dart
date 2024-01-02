@@ -7,7 +7,26 @@ import 'package:frontend/Vistas/Componentes/Grid/Establishment_Details.dart';
 import 'package:frontend/Vistas/Componentes/Pantallas/RegContent.dart';
 import 'package:frontend/Vistas/Wiki/InstitutionsWiki.dart';
 
-class EstablishmentsPage extends StatelessWidget {
+class EstablishmentsPage extends StatefulWidget {
+  @override
+  _EstablishmentsPageState createState() => _EstablishmentsPageState();
+}
+
+class _EstablishmentsPageState extends State<EstablishmentsPage> {
+  String searchQuery = "";
+  final TextEditingController searchController = TextEditingController();
+
+  void dispose() {
+    searchController.dispose(); // No olvides liberar el controlador
+    super.dispose();
+  }
+
+  void _performSearch() {
+    setState(() {
+      searchQuery = searchController.text.toLowerCase();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +45,10 @@ class EstablishmentsPage extends StatelessWidget {
           var establishments = snapshot.data!;
           return RegContent(
             title: 'Establecimientos',
+            onSearch: _performSearch, // Cambia esto para usar el nuevo método
             isEstablishmentPage: true,
+            searchController: searchController, // Agrega esta línea
+
             onHelpPressed: () {
               Navigator.push(
                 context,
@@ -119,11 +141,10 @@ class EstablishmentsPage extends StatelessWidget {
     return FirebaseFirestore.instance
         .collection('establecimientos')
         .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return Establishment.fromFirestore(doc);
-      }).toList();
-    });
+        .map((snapshot) => snapshot.docs
+            .map((doc) => Establishment.fromFirestore(doc))
+            .where((establishment) =>
+                establishment.title.toLowerCase().contains(searchQuery))
+            .toList());
   }
 }

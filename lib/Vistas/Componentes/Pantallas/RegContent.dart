@@ -10,10 +10,15 @@ class RegContent extends StatelessWidget {
   final VoidCallback? onCreateNewPressed;
   final bool isEstablishmentPage; // Variable final
   final VoidCallback? onHelpPressed;
+  final VoidCallback onSearch;
+  final TextEditingController searchController;
+
   // final Function(String) onSearch; // Nuevo parámetro para la búsqueda
 
   const RegContent({
     Key? key,
+    required this.searchController,
+    required this.onSearch,
     required this.title,
     required this.institutions,
     this.onCreateNewPressed,
@@ -33,7 +38,10 @@ class RegContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TitleBarWidget(title: title, onSearch: (_) {}),
+          TitleBarWidget(
+            title: title, onSearch: onSearch,
+            controller: searchController, // Pasa el controlador aquí
+          ),
           const SizedBox(height: 16.0),
           const Divider(),
           isEstablishmentPage

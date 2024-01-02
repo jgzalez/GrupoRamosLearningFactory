@@ -8,7 +8,30 @@ import 'package:frontend/Vistas/Componentes/Pantallas/ReportDetailsPage.dart';
 import 'package:frontend/Vistas/Componentes/Pantallas/ReportsRegistrationForm.dart';
 import 'package:frontend/Vistas/Wiki/ReportsWiki.dart';
 
-class ReportsPage extends StatelessWidget {
+class ReportsPage extends StatefulWidget {
+  @override
+  _ReportsPageState createState() => _ReportsPageState();
+}
+
+class _ReportsPageState extends State<ReportsPage> {
+  final TextEditingController searchController = TextEditingController();
+
+  String searchQuery = "";
+
+  void _performSearch() {
+    setState(() {
+      searchQuery = searchController.text.toLowerCase();
+    });
+  }
+
+  Stream<List<Report>> getReportsStream() {
+    return FirebaseFirestore.instance.collection('reportes').snapshots().map(
+        (snapshot) => snapshot.docs
+            .map((doc) => Report.fromFirestore(doc))
+            .where((report) => report.title.toLowerCase().contains(searchQuery))
+            .toList());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +49,10 @@ class ReportsPage extends StatelessWidget {
           }
           var reports = snapshot.data!;
           return RegContent(
+            searchController: searchController, // Agrega esta línea
+
             title: 'Reportes',
+            onSearch: _performSearch, // Pasamos la función de búsqueda aquí
             isEstablishmentPage: true,
             onHelpPressed: () {
               Navigator.push(
@@ -114,17 +140,5 @@ class ReportsPage extends StatelessWidget {
     // Lógica para eliminar el establecimiento de Firestore
     FirebaseFirestore.instance.collection('reportes').doc(id).delete();
     // Considera implementar alguna lógica para refrescar la lista de establecimientos
-  }
-
-  Stream<List<Report>> getReportsStream() {
-    return FirebaseFirestore.instance
-        .collection('reportes')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-        return Report.fromFirestore(doc);
-      }).toList();
-    });
   }
 }
