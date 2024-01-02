@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend/Controladores/EstablismentReg.dart';
 import 'package:frontend/Modelos/Reports.dart';
 import 'package:frontend/Vistas/Componentes/Grid/CardItem.dart';
 import 'package:frontend/Vistas/Componentes/Pantallas/RegContent.dart';

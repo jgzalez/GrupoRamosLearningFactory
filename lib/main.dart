@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:frontend/Vistas/Componentes/Pantallas/LoginPage.dart';
-import 'package:frontend/Vistas/my_Home_Page.dart';
 import 'firebase_options.dart';
 
 void main() async {

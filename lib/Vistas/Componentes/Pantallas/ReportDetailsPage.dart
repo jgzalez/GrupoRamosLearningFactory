@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Modelos/Models.dart';
 import 'package:frontend/Modelos/Reports.dart';
 
 class ReportDetailsPage extends StatelessWidget {
