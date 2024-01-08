@@ -20,15 +20,6 @@ class LoginScreen extends StatelessWidget {
       User? user = userCredential.user;
       if (user != null) {
         // Asignar una imagen de perfil por defecto o buscar una existente
-        String defaultImageUrl =
-            'https://st3.depositphotos.com/12985790/19065/i/1600/depositphotos_190657278-stock-photo-smiling.jpg';
-
-        // Crear o actualizar el perfil del usuario en Firestore
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          'email': user.email,
-          'profileImage': defaultImageUrl,
-          // otros campos que desees añadir
-        }, SetOptions(merge: true));
 
         Navigator.pushReplacement(
           context,

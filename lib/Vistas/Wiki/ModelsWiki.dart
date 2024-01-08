@@ -5,7 +5,7 @@ class ModelsWiki extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Establecimientos Grupo Ramos Wiki'),
+        title: Text('Modelos Grupo Ramos Wiki'),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
