@@ -23,9 +23,14 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String effectiveImageUrl = imageUrl.isNotEmpty
-        ? imageUrl
-        : 'https://thefoodtech.com/wp-content/uploads/2020/05/Mi-tienda-segura-828x548.jpg';
+    // URL de la imagen por defecto
+    String defaultImageUrl =
+        'https://comprarmaquinariahosteleria.com/blog/wp-content/uploads/2023/02/como-montar-tienda-alimentacion.jpg';
+
+    // Usar imageUrl si no es nulo y no está vacío, de lo contrario usar la imagen por defecto
+    String effectiveImageUrl = (imageUrl != null && imageUrl!.isNotEmpty)
+        ? imageUrl!
+        : defaultImageUrl;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return InkWell(
@@ -35,7 +40,22 @@ class CardItem extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // ... resto del código ...
+            Stack(
+              children: [
+                Image.network(
+                  effectiveImageUrl,
+                  fit: BoxFit.cover,
+                  height: screenWidth * 0.09,
+                  width: double.infinity,
+                ),
+                if (onEdit != null || onDelete != null)
+                  Positioned(
+                    top: 4,
+                    right: 4,
+                    child: buildPopupMenu(),
+                  ),
+              ],
+            ),
             Padding(
               padding: EdgeInsets.all(screenWidth * 0.01),
               child: Column(
@@ -67,9 +87,36 @@ class CardItem extends StatelessWidget {
                 ],
               ),
             ),
+            // Aquí puedes añadir tus botones de editar y eliminar si los necesitas
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildPopupMenu() {
+    return PopupMenuButton<String>(
+      onSelected: (String result) {
+        if (result == 'edit' && onEdit != null) {
+          onEdit!();
+        } else if (result == 'delete' && onDelete != null) {
+          onDelete!();
+        }
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        if (onEdit != null)
+          const PopupMenuItem<String>(
+            value: 'edit',
+            child: Text('Editar'),
+          ),
+        if (onDelete != null)
+          const PopupMenuItem<String>(
+            value: 'delete',
+            child: Text('Borrar'),
+          ),
+      ],
+      icon:
+          Icon(Icons.more_vert, color: Colors.white), // Icono del botón en gris
     );
   }
 }

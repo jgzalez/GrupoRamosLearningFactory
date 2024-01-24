@@ -31,7 +31,11 @@ class _EstablishmentsPageState extends State<EstablishmentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Establecimientos'),
+        title: Text(
+          'Establecimientos',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<List<Establishment>>(
         stream: getInstitutionsStream(),

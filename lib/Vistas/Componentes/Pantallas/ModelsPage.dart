@@ -34,7 +34,12 @@ class _ModelsPageState extends State<ModelsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modelos'),
+        centerTitle: true, // Centrar el título
+        title: Text(
+          'Modelos',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<List<Model>>(
         stream: getModelsStream(),

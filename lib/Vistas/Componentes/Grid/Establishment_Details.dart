@@ -12,7 +12,13 @@ class EstablishmentDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: SelectableText(establishment.title),
+        centerTitle: true, // Centrar el título
+
+        title: SelectableText(
+          establishment.title,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
         child: Column(

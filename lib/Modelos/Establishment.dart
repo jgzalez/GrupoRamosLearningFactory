@@ -8,6 +8,7 @@ class Establishment {
   String carnesArea; // URL a un archivo CSV en Storage
   String cajasArea; // URL a un archivo CSV en Storage
   String fyvArea; // URL a un archivo CSV en Storage
+  String categoria;
 
   // Agrega estos nuevos campos
   final String imageUrl;
@@ -18,6 +19,7 @@ class Establishment {
   Establishment({
     required this.id,
     required this.title,
+    required this.categoria,
     required this.location,
     required this.deliArea,
     required this.carnesArea,
@@ -33,16 +35,21 @@ class Establishment {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return Establishment(
       id: doc.id,
+      categoria: data['categoria'] ?? 'Tienda',
       title: data['title'] ?? 'Tienda',
-      location: data['location'] ?? 'Ubicación predeterminada',
-      deliArea: data['deliArea'] ?? 'URL del área Deli predeterminada',
-      carnesArea: data['carnesArea'] ?? 'URL del área Carnes predeterminada',
-      cajasArea: data['cajasArea'] ?? 'URL del área Cajas predeterminada',
-      fyvArea: data['fyvArea'] ?? 'URL del área FyV predeterminada',
-      imageUrl: data['imageUrl'] ?? 'URL de imagen predeterminada',
+      location: data['location'] ?? 'Ubicación no Registrada',
+      deliArea:
+          data['deliArea'] ?? 'No se ha definido la Data del Área de Deli',
+      carnesArea:
+          data['carnesArea'] ?? 'No se ha definido la Data del Área de Carnes',
+      cajasArea:
+          data['cajasArea'] ?? 'No se ha definido la Data del Área de Cajas',
+      fyvArea: data['fyvArea'] ?? 'No se ha definido la Data del Área de FyV',
+      imageUrl: data['imageUrl'] ??
+          'https://thefoodtech.com/wp-content/uploads/2020/05/Mi-tienda-segura-828x548.jpg',
       creationDate: data['creationDate'] ?? 'Fecha predeterminada',
       description: data['description'] ?? 'Descripción predeterminada',
-      author: data['author'] ?? 'Autor predeterminado',
+      author: data['author'] ?? 'INGENIO',
     );
   }
 
@@ -54,6 +61,10 @@ class Establishment {
       'carnesArea': carnesArea,
       'cajasArea': cajasArea,
       'fyvArea': fyvArea,
+      'imageUrl': imageUrl,
+      'creationDate': creationDate,
+      'description': description,
+      'author': author,
     };
   }
 }

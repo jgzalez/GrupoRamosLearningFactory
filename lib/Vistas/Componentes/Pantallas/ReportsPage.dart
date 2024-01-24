@@ -35,7 +35,12 @@ class _ReportsPageState extends State<ReportsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reportes'),
+        centerTitle: true, // Centrar el título
+        title: Text(
+          'Reportes',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<List<Report>>(
         stream: getReportsStream(),

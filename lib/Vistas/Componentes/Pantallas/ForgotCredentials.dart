@@ -42,7 +42,13 @@ class ForgotCredentialsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recuperación de Credenciales'),
+        centerTitle: true, // Centrar el título
+
+        title: Text(
+          'Recuperación de Credenciales',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),

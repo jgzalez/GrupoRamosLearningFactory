@@ -94,7 +94,11 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registro de Reportes'),
+        title: Text(
+          'Registro de Reportes',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: Center(
         child: Column(

@@ -32,7 +32,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Menú Principal'),
+        centerTitle: true, // Centrar el título
+        title: Text(
+          'Menú Principal',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: _buildBody(),
     );
@@ -65,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 Text(role, style: TextStyle(fontSize: 16, color: Colors.grey)),
+                SizedBox(height: 40),
                 Divider(),
+                SizedBox(height: 40),
                 _buildButtonBar(),
               ],
             ),
@@ -77,13 +84,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildButtonBar() {
-    return ButtonBar(
-      alignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        _buildSquareButton('Establecimientos', Icons.business),
-        _buildSquareButton('Modelos', Icons.analytics),
-        _buildSquareButton('Reportes', Icons.report),
-      ],
+    return Padding(
+      padding: EdgeInsets.only(right: 35), // Ajusta este valor según necesites
+      child: ButtonBar(
+        alignment: MainAxisAlignment.center,
+        children: <Widget>[
+          _buildSquareButton('Establecimientos', Icons.business),
+          SizedBox(width: 40), // Espaciador entre los botones
+          _buildSquareButton('Modelos', Icons.analytics),
+          SizedBox(width: 40), // Espaciador entre los botones
+          _buildSquareButton('Reportes', Icons.report),
+        ],
+      ),
     );
   }
 

@@ -10,7 +10,12 @@ class ReportDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(report.title),
+        centerTitle: true, // Centrar el título
+        title: Text(
+          report.title,
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(
         child: Padding(
