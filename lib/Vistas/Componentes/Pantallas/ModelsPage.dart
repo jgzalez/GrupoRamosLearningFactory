@@ -62,7 +62,7 @@ class _ModelsPageState extends State<ModelsPage> {
                           ? model.imageUrl
                           : 'https://images.unsplash.com/photo-1581090700227-1e37b190418e?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                       creationDate: model.creationDate,
-                      author: model.author,
+                      location: 'No location available for models',
                       description: model.description,
                       onTap: () {
                         Navigator.of(context).push(

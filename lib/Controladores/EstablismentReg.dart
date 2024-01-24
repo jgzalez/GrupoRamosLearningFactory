@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart'; // Añadir para cargar archivos
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:frontend/Modelos/Establishment.dart'; // Asegúrate de que este import es correcto
+import 'package:frontend/Modelos/Establishment.dart';
 
 class EstablishmentRegistrationForm extends StatefulWidget {
   final Establishment? establishmentToEdit;
@@ -23,71 +23,8 @@ class _EstablishmentRegistrationFormState
   final _formKey = GlobalKey<FormState>();
 
   // Controladores de texto
-  final TextEditingController _authorController = TextEditingController();
-  final TextEditingController _creationDateController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
-  final TextEditingController _imageController = TextEditingController();
-  final TextEditingController _employeeCountController =
-      TextEditingController();
-  final TextEditingController _operatingHoursController =
-      TextEditingController();
-  final TextEditingController _sizeController = TextEditingController();
-  final TextEditingController _customerFlowController = TextEditingController();
-  final TextEditingController _establishmentTypeController =
-      TextEditingController();
-  final TextEditingController _maxCapacityController = TextEditingController();
-  final TextEditingController _foundationYearController =
-      TextEditingController();
-  // ... otros controladores de texto para cada atributo
-
-  Future<void> _uploadFilesToFirebaseStorage(
-      Establishment establishmentData) async {
-    for (var entry in _selectedFiles.entries) {
-      final file = entry.value;
-      final ref = FirebaseStorage.instance
-          .ref()
-          .child('uploads/${entry.key}/${file.name}');
-
-      try {
-        String fileUrl;
-        if (kIsWeb) {
-          Uint8List? fileBytes = file.bytes;
-          if (fileBytes != null) {
-            await ref.putData(fileBytes);
-          }
-        } else {
-          if (file.path != null) {
-            await ref.putFile(File(file.path!));
-          }
-        }
-        fileUrl = await ref.getDownloadURL();
-
-        // Asignar la URL al campo correspondiente en 'establishmentData'
-        switch (entry.key) {
-          case 'customerRatings':
-            establishmentData.customerRatings = fileUrl;
-            break;
-          case 'numberOfReviews':
-            establishmentData.numberOfReviews = fileUrl;
-            break;
-          case 'salesHistory':
-            establishmentData.salesHistory = fileUrl;
-            break;
-          case 'customerDemographics':
-            establishmentData.customerDemographics = fileUrl;
-            break;
-
-          // ... casos para otros archivos ...
-        }
-      } catch (e) {
-        print('Error al subir archivo: $e');
-      }
-    }
-  }
 
   // Variables para guardar los archivos seleccionados
   Map<String, PlatformFile> _selectedFiles = {};
@@ -96,50 +33,16 @@ class _EstablishmentRegistrationFormState
   void initState() {
     super.initState();
     if (widget.establishmentToEdit != null) {
-      // Llenar los controladores con los datos existentes para la edición
       _titleController.text = widget.establishmentToEdit!.title;
-      _nameController.text = widget.establishmentToEdit!.name;
-      _locationController.text = widget.establishmentToEdit!.geographicLocation;
-      _imageController.text = widget.establishmentToEdit!.imageUrl;
-      _authorController.text = widget.establishmentToEdit!.author;
-      _creationDateController.text = widget.establishmentToEdit!.creationDate;
-      _descriptionController.text = widget.establishmentToEdit!.description;
-      // ... llenar otros controladores...
-      _employeeCountController.text =
-          widget.establishmentToEdit!.numberOfEmployees.toString();
-      _operatingHoursController.text =
-          widget.establishmentToEdit!.businessHours;
-      _sizeController.text = widget.establishmentToEdit!.establishmentSize;
-      _customerFlowController.text = widget.establishmentToEdit!.customerFlow;
-      _establishmentTypeController.text =
-          widget.establishmentToEdit!.typeOfEstablishment;
-      _maxCapacityController.text =
-          widget.establishmentToEdit!.maximumCapacity.toString();
-      _foundationYearController.text =
-          widget.establishmentToEdit!.foundationYear;
-
-      // Si tienes controladores para archivos, puedes configurarlos aquí también
-      // Por ejemplo, si guardas los nombres de los archivos en el objeto Establishment,
-      // puedes asignar estos nombres a una variable de estado y mostrarlos en la interfaz de usuario.
+      _locationController.text = widget.establishmentToEdit!.location;
+      // Inicializar _selectedFiles si es necesario
     }
   }
 
   @override
   void dispose() {
     _titleController.dispose();
-    _nameController.dispose();
     _locationController.dispose();
-    _employeeCountController.dispose();
-    _operatingHoursController.dispose();
-    _sizeController.dispose();
-    _customerFlowController.dispose();
-    _establishmentTypeController.dispose();
-    _maxCapacityController.dispose();
-    _foundationYearController.dispose();
-    _authorController.dispose();
-    _creationDateController.dispose();
-    _descriptionController.dispose();
-    // Dispose otros controladores de texto
     super.dispose();
   }
 
@@ -164,52 +67,18 @@ class _EstablishmentRegistrationFormState
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               buildTextFormField(_titleController, 'Título'),
-              buildTextFormField(_nameController, 'Nombre del Establecimiento'),
-              buildTextFormField(
-                  _descriptionController, 'Descripcion del Establecimiento'),
-              buildTextFormField(_nameController, 'Nombre del Establecimiento'),
-              buildTextFormField(_nameController, 'Nombre del Establecimiento'),
-
-              buildTextFormField(_locationController, 'Ubicación Geográfica'),
-              buildTextFormField(
-                  _employeeCountController, 'Número de Empleados',
-                  isNumeric: true),
-              buildTextFormField(
-                  _operatingHoursController, 'Horarios de Atención'),
-              buildTextFormField(_sizeController, 'Tamaño del Establecimiento',
-                  isNumeric: true),
-              buildTextFormField(_customerFlowController, 'Flujo de Clientes',
-                  isNumeric: true),
-              buildTextFormField(
-                  _establishmentTypeController, 'Tipo de Establecimiento'),
-              buildTextFormField(_maxCapacityController, 'Aforo Máximo',
-                  isNumeric: true),
-              buildTextFormField(_foundationYearController, 'Año de Fundación',
-                  isNumeric: true),
+              buildTextFormField(_locationController, 'Ubicación'),
 
               // Campos para la selección de archivos
-              filePickerField('Valoraciones de Clientes', 'customerRatings'),
-              filePickerField('Número de Reseñas', 'numberOfReviews'),
-              filePickerField('Historial de Ventas', 'salesHistory'),
-              filePickerField(
-                  'Datos Demográficos de Clientes', 'customerDemographics'),
-              filePickerField('Ingresos Anuales', 'annualRevenue'),
-              filePickerField('Gastos Operativos', 'operationalExpenses'),
-              filePickerField('Eventos Especiales', 'specialEvents'),
-              filePickerField('Inventario de Productos/Servicios',
-                  'inventoryOfProductsServices'),
-              filePickerField(
-                  'Impacto de Factores Estacionales', 'seasonalFactorsImpact'),
-              filePickerField('Competencia Local', 'localCompetition'),
-              filePickerField('Tendencias de Mercado', 'marketTrends'),
-              // ... otros campos para archivos aquí ...
+              filePickerField('Área Deli', 'deliArea'),
+              filePickerField('Área Carnes', 'carnesArea'),
+              filePickerField('Área Cajas', 'cajasArea'),
+              filePickerField('Área Frutas y Verduras', 'fyvArea'),
 
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {
-                    _registerEstablishment();
-                  },
+                  onPressed: _registerEstablishment,
                   child: Text('Registrar'),
                 ),
               ),
@@ -253,76 +122,83 @@ class _EstablishmentRegistrationFormState
 
   Future<void> _registerEstablishment() async {
     if (_formKey.currentState!.validate()) {
-      // Aquí se recopilan los datos de los controladores de texto
-      final establishmentData = Establishment(
-        id: '',
+      // Crear instancia de Establishment con los datos del formulario
+      Establishment establishmentData = Establishment(
+        id: widget.establishmentToEdit?.id ?? '',
         title: _titleController.text,
-        name: _nameController.text,
-        imageUrl: _imageController.text,
-        geographicLocation: _locationController.text,
-        author: _authorController.text,
-        creationDate: _creationDateController.text,
-        description: _descriptionController.text,
-        numberOfEmployees: int.tryParse(_employeeCountController.text) ?? 0,
-        businessHours: _operatingHoursController.text,
-        establishmentSize: _sizeController.text,
-        customerFlow: _customerFlowController.text,
-        typeOfEstablishment: _establishmentTypeController.text,
-        maximumCapacity: int.tryParse(_maxCapacityController.text) ?? 0,
-        foundationYear: _foundationYearController.text,
-
-        // ... otros campos ...
+        description: widget.establishmentToEdit?.description ?? '',
+        imageUrl: widget.establishmentToEdit?.imageUrl ?? '',
+        creationDate: widget.establishmentToEdit?.creationDate ?? '',
+        location: _locationController.text,
+        author: widget.establishmentToEdit?.author ?? '',
+        deliArea: widget.establishmentToEdit?.deliArea ?? '',
+        carnesArea: widget.establishmentToEdit?.carnesArea ?? '',
+        cajasArea: widget.establishmentToEdit?.cajasArea ?? '',
+        fyvArea: widget.establishmentToEdit?.fyvArea ?? '',
       );
 
       try {
-        await _uploadFilesToFirebaseStorage(
-            establishmentData); // Subir archivos antes de guardar los datos
-
-        // Lógica para manejar los archivos, si es necesario
-        // Por ejemplo, subir archivos a un servidor y obtener URLs
-
-        // Lógica para guardar 'establishmentData' en la base de datos
-        // Por ejemplo, usando Firestore
+        // Subir archivos y actualizar las URLs en establishmentData
+        await _uploadFilesToFirebaseStorage(establishmentData);
 
         if (widget.establishmentToEdit == null) {
-          // Crear un nuevo establecimiento
-
+          // Crear un nuevo establecimiento en Firestore
           await FirebaseFirestore.instance
               .collection('establecimientos')
               .add(establishmentData.toMap());
-          // Mostrar mensaje de éxito o realizar acciones después de la creación
-          Navigator.pop(context, true);
         } else {
-          final updatedEstablishment = Establishment(
-              id: widget.establishmentToEdit!.id, // Usa el 'id' existente
-              title: _titleController.text,
-              name: _nameController.text,
-              imageUrl: _imageController.text,
-              geographicLocation: _locationController.text,
-              author: _authorController.text,
-              creationDate: _creationDateController.text,
-              description: _descriptionController.text,
-              numberOfEmployees:
-                  int.tryParse(_employeeCountController.text) ?? 0,
-              businessHours: _operatingHoursController.text,
-              establishmentSize: _sizeController.text,
-              customerFlow: _customerFlowController.text,
-              typeOfEstablishment: _establishmentTypeController.text,
-              maximumCapacity: int.tryParse(_maxCapacityController.text) ?? 0,
-              foundationYear: _foundationYearController.text);
-
-          // Actualizar un establecimiento existente
+          // Actualizar un establecimiento existente en Firestore
           await FirebaseFirestore.instance
               .collection('establecimientos')
-              .doc(updatedEstablishment
-                  .id) // Asegúrate de tener un 'id' en Establishment
+              .doc(establishmentData.id)
               .update(establishmentData.toMap());
-          // Mostrar mensaje de éxito o realizar acciones después de la edición
-          Navigator.pop(context, true);
+        }
+        Navigator.pop(context, true);
+      } catch (e) {
+        print('Ocurrió un error: $e');
+      }
+    }
+  }
+
+  Future<void> _uploadFilesToFirebaseStorage(
+      Establishment establishmentData) async {
+    for (var entry in _selectedFiles.entries) {
+      final file = entry.value;
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child('uploads/${entry.key}/${file.name}');
+
+      try {
+        String fileUrl;
+        if (kIsWeb) {
+          Uint8List? fileBytes = file.bytes;
+          if (fileBytes != null) {
+            await ref.putData(fileBytes);
+          }
+        } else {
+          if (file.path != null) {
+            await ref.putFile(File(file.path!));
+          }
+        }
+        fileUrl = await ref.getDownloadURL();
+
+        // Asignar la URL al campo correspondiente en establishmentData
+        switch (entry.key) {
+          case 'deliArea':
+            establishmentData.deliArea = fileUrl;
+            break;
+          case 'carnesArea':
+            establishmentData.carnesArea = fileUrl;
+            break;
+          case 'cajasArea':
+            establishmentData.cajasArea = fileUrl;
+            break;
+          case 'fyvArea':
+            establishmentData.fyvArea = fileUrl;
+            break;
         }
       } catch (e) {
-        // Manejar errores
-        print('Ocurrió un error: $e');
+        print('Error al subir archivo: $e');
       }
     }
   }

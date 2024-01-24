@@ -74,7 +74,7 @@ class _ReportsPageState extends State<ReportsPage> {
                           ? report.imageUrl
                           : 'https://images.unsplash.com/photo-1530982011887-3cc11cc85693?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
                       creationDate: report.creationDate,
-                      author: report.author,
+                      location: report.location,
                       description: report.description,
                       onEdit: () => onEdit(context, report),
                       onDelete: () => onDelete(context, report),

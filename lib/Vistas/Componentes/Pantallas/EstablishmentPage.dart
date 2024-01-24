@@ -36,6 +36,8 @@ class _EstablishmentsPageState extends State<EstablishmentsPage> {
       body: StreamBuilder<List<Establishment>>(
         stream: getInstitutionsStream(),
         builder: (context, snapshot) {
+          print(context);
+          print(snapshot);
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator();
           }
@@ -66,11 +68,9 @@ class _EstablishmentsPageState extends State<EstablishmentsPage> {
             institutions: establishments
                 .map((establishment) => CardItem(
                       title: establishment.title,
-                      imageUrl: establishment.imageUrl.isNotEmpty
-                          ? establishment.imageUrl
-                          : 'https://images.unsplash.com/photo-1530982011887-3cc11cc85693?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+                      location: establishment.location,
                       creationDate: establishment.creationDate,
-                      author: establishment.author,
+                      imageUrl: establishment.imageUrl,
                       description: establishment.description,
                       onEdit: () => onEdit(context, establishment),
                       onDelete: () => onDelete(context, establishment),

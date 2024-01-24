@@ -7,6 +7,7 @@ class Report {
   final String author;
   final String category;
   final String creationDate;
+  final String location;
   final String version;
   final String updateDate;
 
@@ -17,6 +18,7 @@ class Report {
     required this.id,
     required this.author,
     required this.imageUrl,
+    required this.location,
     required this.description,
     required this.category,
     required this.creationDate,
@@ -31,6 +33,7 @@ class Report {
     return Report(
       id: data['id'] ?? '',
       title: data['title'] ?? '',
+      location: data['location'] ?? '',
       author: data['author'] ?? '',
       imageUrl: data['imageUrl'] ?? '',
       description: data['description'] ?? '',
