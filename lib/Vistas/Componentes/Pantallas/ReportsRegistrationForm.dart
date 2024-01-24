@@ -66,11 +66,14 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
     try {
       Map<String, dynamic> report =
           await createEstablishmentReport(selectedEstablishmentId!);
-
+      // await saveReportToFile(report,
+      //     'establishment_report.txt'); // Aquí especificas la ruta del archivo
       // Llamar a la función en Model1 para procesar la data
       if (selectedModel == "modelos01") {
         await Model1.processEstablishmentData(report);
       }
+      print(report);
+
       // Puedes añadir condiciones para otros modelos aquí
     } catch (e) {
       print("Error generating report: $e");
@@ -94,11 +97,7 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Registro de Reportes',
-          style: TextStyle(color: Colors.white),
-        ),
-        backgroundColor: Colors.blue,
+        title: Text('Registro de Reportes'),
       ),
       body: Center(
         child: Column(

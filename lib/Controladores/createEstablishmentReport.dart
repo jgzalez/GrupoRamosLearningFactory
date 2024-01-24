@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:csv/csv.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -57,31 +60,71 @@ Future<Map<String, dynamic>> fetchEstablishmentData(
 }
 
 // Main function to create establishment report
+// Función principal para crear el informe del establecimiento
 Future<Map<String, dynamic>> createEstablishmentReport(
     String establishmentId) async {
   try {
+    // Obtener los datos del establecimiento de Firestore
     Map<String, dynamic> establishmentData =
         await fetchEstablishmentData(establishmentId);
 
-    // List of keys that are expected to be CSV file URLs
+    // Lista de claves que esperamos sean URLs a archivos CSV
     List<String> csvFileKeys = [
-      'marketTrends',
-      'customerDemographics',
+      'deliArea',
+      'carnesArea',
+      'cajasArea',
+      'fyvArea',
     ];
 
+    // Crear una estructura para almacenar los datos históricos de cada área
+    Map<String, dynamic> historicalData = {};
+
+    // Recorrer cada clave y descargar y analizar el contenido del CSV
     for (String key in csvFileKeys) {
       if (establishmentData.containsKey(key) &&
-          establishmentData[key].endsWith('.csv')) {
+          establishmentData[key].isNotEmpty) {
         String fileUrl = establishmentData[key];
-        String storagePath = extractStoragePath(
-            fileUrl); // Implement this function to extract the path from the gs:// URL
+        String storagePath = extractStoragePath(fileUrl);
         String csvContent = await downloadCsvFileContent(storagePath);
-        var fileData = await parseCsvFile(csvContent); // Pass csvContent here
-        establishmentData[key] = fileData;
+        List<Map<String, dynamic>> fileData = await parseCsvFile(csvContent);
+
+        // Asegúrate de que los tipos de datos sean correctos y consistentes aquí
+        // Por ejemplo: convertir valores numéricos a double o int según corresponda
+
+        // Agregar los datos históricos al JSON bajo la clave del área correspondiente
+        historicalData[key] = {
+          'id': establishmentId,
+          'nombreArea': key,
+          'dataHistorica': fileData.map((row) {
+            // Aquí convertirías y formatearías cada fila según sea necesario
+            return row.map((column, value) {
+              // Convierte la clave a un string si es necesario
+              String columnAsString = column.toString();
+              // Convierte el valor al tipo de datos adecuado
+              dynamic convertedValue =
+                  value; // Aquí deberías hacer la conversión
+              return MapEntry(columnAsString, convertedValue);
+            });
+          }).toList(),
+        };
       }
     }
 
-    return establishmentData;
+    // Agregar los datos históricos al informe del establecimiento
+    establishmentData['historicalData'] = historicalData;
+
+    // Formatea el JSON de salida para tener una estructura clara y consistente
+    Map<String, dynamic> formattedJson = {
+      'imageUrl': establishmentData['imageUrl'],
+      'creationDate': establishmentData['creationDate'],
+      'title': establishmentData['title'],
+      'description': establishmentData['description'],
+      'location': establishmentData['location'],
+      'author': establishmentData['author'],
+      'historicalData': historicalData,
+    };
+
+    return formattedJson;
   } catch (e) {
     print('Error creating establishment report: $e');
     return {};
