@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Model {
+  final String id;
   final String title;
   final String description;
   final String author;
@@ -8,10 +9,13 @@ class Model {
   final String creationDate;
   final String version;
   final String updateDate;
+  final String csvUrl;
 
   var imageUrl;
 
   Model({
+    required this.id,
+    required this.csvUrl,
     required this.title,
     required this.author,
     required this.imageUrl,
@@ -27,7 +31,10 @@ class Model {
     Map data = doc.data() as Map<String, dynamic>;
 
     return Model(
+      id: doc.id, // Guardar el ID del documento
+
       title: data['title'] ?? '',
+      csvUrl: data['csvUrl'] ?? '',
       author: data['author'] ?? '',
       imageUrl: data['imageUrl'] ?? '',
       description: data['description'] ?? '',
@@ -44,6 +51,7 @@ class Model {
       'title': title,
       'description': description,
       'category': category,
+      'csvUrl': csvUrl,
       'creationDate': creationDate,
       'version': version,
       'updateDate': updateDate,

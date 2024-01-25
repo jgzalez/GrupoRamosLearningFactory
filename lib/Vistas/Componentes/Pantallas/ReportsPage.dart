@@ -81,7 +81,6 @@ class _ReportsPageState extends State<ReportsPage> {
                       creationDate: report.creationDate,
                       location: report.location,
                       description: report.description,
-                      onEdit: () => onEdit(context, report),
                       onDelete: () => onDelete(context, report),
                       onTap: () {
                         Navigator.of(context).push(

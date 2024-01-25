@@ -8,28 +8,47 @@ import 'dart:typed_data'; // New import for Uint8List
 class Model1 {
   static Future<void> processEstablishmentData(
       Map<String, dynamic> establishmentData) async {
-    // Convertir la data a Excel
-    var excelFile = _createExcelFile(establishmentData);
-    printExcelContents(excelFile);
+    // Convertir la data a CSV
+    var csvData = _createCsv(establishmentData);
+    print(csvData);
 
     print("Guardemos el archivo");
     // Guardar el archivo localmente
-    var fileBytes = excelFile.save() ?? <int>[];
-    print(fileBytes);
+    var fileBytes = Uint8List.fromList(csvData.codeUnits);
     print("fileBytes listo");
-
-    Uint8List uint8list = Uint8List.fromList(fileBytes);
 
     // Subir el archivo a Firebase Storage y obtener el URL
     String downloadUrl =
-        await _uploadFileToFirebaseStorage(uint8list, "report.xlsx");
+        await _uploadFileToFirebaseStorage(fileBytes, "report.csv");
 
     // Crear un nuevo reporte en Firestore con el URL
     await _createNewReportInFirestore(downloadUrl, establishmentData);
   }
 
+  static Future<void> _createNewReportInFirestore(
+      String downloadUrl, Map<String, dynamic> establishmentData) async {
+    var report = {
+      "title": establishmentData['title'] ?? 'Nuevo Reporte',
+
+      "csvUrl": downloadUrl,
+
+      "imageUrl":
+          "https://images.unsplash.com/photo-1591696205602-2f950c417cb9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+
+      "description": "Reporte generado de establecimiento " +
+          (establishmentData['title'] ?? "existente") +
+          " en fecha " +
+          DateTime.now().toString()
+
+      // Agrega otros campos necesarios
+    };
+    print(report);
+    await FirebaseFirestore.instance.collection('reportes').add(report);
+  }
+
   static Future<String> _uploadFileToFirebaseStorage(
       Uint8List fileData, String fileName) async {
+    print("Lesgooo");
     // Create a reference to Firebase Storage
     Reference storageRef =
         FirebaseStorage.instance.ref().child('reports/$fileName');
@@ -41,15 +60,11 @@ class Model1 {
     return await storageRef.getDownloadURL();
   }
 
-  static Excel _createExcelFile(Map<String, dynamic> data) {
-    print("Iniciando creación de archivo Excel");
-    print("Data obtenida... \n\n\n\\n ");
-    print(data);
-    var excel = Excel.createExcel();
-    Sheet sheetObject = excel['Sheet1'];
+  static String _createCsv(Map<String, dynamic> data) {
+    StringBuffer csvBuffer = StringBuffer();
 
     // Crear las cabeceras de la tabla
-    var headers = [
+    List<String> headers = [
       "Año",
       "Mes",
       "Tiempo de servicio",
@@ -63,65 +78,34 @@ class Model1 {
       "Zona",
       "Área"
     ];
-
-    // Agregar cabeceras a la hoja de cálculo
-    for (int i = 0; i < headers.length; i++) {
-      print("Agregando cabecera: ${headers[i]}");
-
-      sheetObject
-          .cell(CellIndex.indexByColumnRow(columnIndex: i, rowIndex: 0))
-          .value = TextCellValue(headers[i]);
-    }
+    csvBuffer.writeln(headers.join(','));
 
     // Procesar y agregar los datos históricos
-    int rowIndex = 1;
-    int totalAreas = data['historicalData']?.length ?? 0;
-    int processedAreas = 0;
-
-    print("Procesando datos históricos");
     data['historicalData']?.forEach((areaKey, areaData) {
-      print("Área: $areaKey");
-      print("Área: $areaData");
-
       if (areaData['dataHistorica'] is List) {
-        print("Es una lista");
         List<Map<String, dynamic>> historicalData =
             calculateAdditionalColumns(areaData['dataHistorica']);
-        print(historicalData);
-        for (var row in historicalData) {
-          print(row);
-          print("Agregando fila: $rowIndex");
-
-          // Asegúrate de que los valores clave estén presentes y no sean nulos
-          int yearValue = row['Ano '] ?? 0; // Asume 0 si es nulo
-          String monthValue = row['Mes'] ?? ""; // Asume cadena vacía si es nulo
-
-          print(yearValue);
-          sheetObject
-              .cell(CellIndex.indexByColumnRow(
-                  columnIndex: 0, rowIndex: rowIndex))
-              .value = IntCellValue(yearValue);
-          print(monthValue);
-
-          sheetObject
-              .cell(CellIndex.indexByColumnRow(
-                  columnIndex: 1, rowIndex: rowIndex))
-              .value = TextCellValue(monthValue);
-
-          print(processedAreas);
-          print(totalAreas);
-          // Continuar asignando valores para las demás celdas...
-          processedAreas++; // Incrementar el contador de áreas procesadas
-
-          // Verificar si ya se procesaron todas las áreas
-
-          rowIndex++;
-          print("desde arriba");
-        }
+        historicalData.forEach((row) {
+          List<dynamic> rowData = [
+            row['Ano '] ?? '',
+            row['Mes'] ?? '',
+            row['Tiempo de servicio Mes/Ano'] ?? '',
+            row['Demanda proyectada diaria en unidades'] ?? '',
+            row['Tiempo proyectado demandado'] ?? '',
+            row['Tiempo disponible '] ?? '',
+            row['Cantidad Real de Empleados Requeridos'] ?? '',
+            row['Cantidad redondeada de empleados'] ?? '',
+            row['Cantidad de Empleados Actuales'] ?? '',
+            row['Tipo Tienda'] ?? '',
+            row['Zona'] ?? '',
+            // Agrega aquí los campos adicionales que necesites
+          ];
+          csvBuffer.writeln(rowData.join(','));
+        });
       }
     });
-    print("Entregando excel");
-    return excel;
+
+    return csvBuffer.toString();
   }
 
   static void _addRow(Sheet sheet, int rowIndex, List<dynamic> rowData,
@@ -203,42 +187,33 @@ class Model1 {
     // Adding a blank row after the list
     _addRow(sheet, startingRow++, ['']);
   }
-
-  static Future<void> _createNewReportInFirestore(
-      String downloadUrl, Map<String, dynamic> establishmentData) async {
-    var report = {
-      "title": establishmentData['title'] ?? 'Nuevo Reporte',
-      "imageUrl": downloadUrl,
-      // Agrega otros campos necesarios
-    };
-    await FirebaseFirestore.instance.collection('reports').add(report);
-  }
 }
 
-void printExcelContents(Excel excel) {
-  for (var sheet in excel.sheets.keys) {
-    print('Sheet Name: $sheet');
-    print('---------------------------------------------');
+// void printExcelContents(Excel excel) {
+//   for (var sheet in excel.sheets.keys) {
+//     print('Sheet Name: $sheet');
+//     print('---------------------------------------------');
 
-    var sheetObject = excel[sheet];
+//     var sheetObject = excel[sheet];
 
-    for (var row in sheetObject.rows) {
-      var rowData = row.map((cell) {
-        var value = cell?.value; // Get the value of the cell
-        return value ?? ""; // Return empty string if the cell is null
-      }).join("\t"); // Join the cell values with a tab separator
+//     for (var row in sheetObject.rows) {
+//       var rowData = row.map((cell) {
+//         var value = cell?.value; // Get the value of the cell
+//         return value ?? ""; // Return empty string if the cell is null
+//       }).join("\t"); // Join the cell values with a tab separator
 
-      print(rowData); // Print the row data
-    }
+//       print(rowData); // Print the row data
+//     }
 
-    print('---------------------------------------------\n');
-  }
-}
+//     print('---------------------------------------------\n');
+//   }
+// }
 
 List<Map<String, dynamic>> calculateAdditionalColumns(
     List<Map<String, dynamic>> historicalData) {
   return historicalData.map((data) {
     print("asdasdasdasd");
+
     double ventas = double.tryParse(
             data['Ventas del Area'].toString().replaceAll(',', '')) ??
         0;

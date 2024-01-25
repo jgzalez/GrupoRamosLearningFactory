@@ -12,10 +12,8 @@ class EstablishmentDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true, // Centrar el título
-
         title: SelectableText(
-          establishment.title,
+          "Detalles del Establecimiento",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue,
@@ -23,26 +21,74 @@ class EstablishmentDetailsPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Información del Establecimiento:',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  buildDetailText('Título: ', establishment.title),
-                  buildDetailText('Ubicación: ', establishment.location),
-                  buildFileLink(
-                      context, 'Área de Deli: ', establishment.deliArea),
-                  buildFileLink(
-                      context, 'Área de Carnes: ', establishment.carnesArea),
-                  buildFileLink(
-                      context, 'Área de Cajas: ', establishment.cajasArea),
-                  buildFileLink(context, 'Área de Frutas y Verduras: ',
-                      establishment.fyvArea),
-                ],
+            Text(establishment.title,
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+            Container(
+              width: double.infinity,
+              height: 200, // Ajusta la altura según necesites
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12), // Bordes redondeados
+                image: DecorationImage(
+                  image:
+                      NetworkImage(establishment.imageUrl), // URL de la imagen
+                  fit: BoxFit.cover,
+                ),
               ),
+            ),
+            SizedBox(height: 75),
+
+            // Widget para la imagen
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  // Columna de atributos
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('Información del Establecimiento:',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                          buildDetailText('Título: ', establishment.title),
+                          buildDetailText(
+                              'Ubicación: ', establishment.location),
+                          buildDetailText('Autor: ', establishment.author),
+
+                          // Agrega más atributos aquí
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  // Columna de links
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('Data de las Areas:',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold)),
+                          buildFileLink(context, 'Área de Deli: ',
+                              establishment.deliArea),
+                          buildFileLink(context, 'Área de Carnes: ',
+                              establishment.carnesArea),
+                          buildFileLink(context, 'Área de Cajas: ',
+                              establishment.cajasArea),
+                          buildFileLink(context, 'Área de Frutas y Verduras: ',
+                              establishment.fyvArea),
+                          // Agrega más links aquí
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

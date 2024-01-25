@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ForgotCredentialsScreen extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -42,34 +42,41 @@ class ForgotCredentialsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true, // Centrar el título
-
         title: Text(
           'Recuperación de Credenciales',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.blue,
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: 'Correo Electrónico',
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.emailAddress,
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Container(
+            width: double.infinity, // Establece el ancho al máximo disponible
+            constraints:
+                BoxConstraints(maxWidth: 600), // Limita el ancho máximo
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Correo Electrónico',
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                ),
+                SizedBox(height: 20.0),
+                ElevatedButton(
+                  onPressed: () async {
+                    _sendRecoveryRequest(context);
+                  },
+                  child: Text('Enviar Solicitud'),
+                ),
+              ],
             ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () async {
-                _sendRecoveryRequest(context);
-              },
-              child: Text('Enviar Solicitud'),
-            ),
-          ],
+          ),
         ),
       ),
     );

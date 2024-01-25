@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:frontend/Modelos/Reports.dart';
 
 class ReportDetailsPage extends StatelessWidget {
@@ -10,7 +11,7 @@ class ReportDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true, // Centrar el título
+        centerTitle: true,
         title: Text(
           report.title,
           style: TextStyle(color: Colors.white),
@@ -23,38 +24,36 @@ class ReportDetailsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Descripción:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(report.description,
-                  style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Text(
-                'Categoría:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(report.category, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Text(
-                'Fecha de Creación:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(report.creationDate,
-                  style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Text(
-                'Versión:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(report.version, style: TextStyle(fontSize: 16)),
-              SizedBox(height: 10),
-              Text(
-                'Fecha de Actualización:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SelectableText(report.updateDate, style: TextStyle(fontSize: 16)),
+              // ... otros Text y SelectableText para mostrar detalles del reporte
+              if (report.csvUrl != null && report.csvUrl.isNotEmpty)
+                _buildDownloadCsvSection(context, report.csvUrl),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDownloadCsvSection(BuildContext context, String csvUrl) {
+    return InkWell(
+      onTap: () async {
+        final uri = Uri.tryParse(csvUrl);
+        if (uri != null && await canLaunchUrl(uri)) {
+          await launchUrl(uri);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No se puede abrir el enlace')),
+          );
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Text(
+          'Descargar CSV',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.blue,
+            decoration: TextDecoration.underline,
           ),
         ),
       ),

@@ -10,49 +10,53 @@ class Report {
   final String location;
   final String version;
   final String updateDate;
-
-  var imageUrl;
+  final String imageUrl;
+  final String csvUrl; // Campo csvUrl agregado
 
   Report({
-    required this.title,
     required this.id,
-    required this.author,
-    required this.imageUrl,
-    required this.location,
+    required this.title,
     required this.description,
+    required this.author,
     required this.category,
     required this.creationDate,
+    required this.location,
     required this.version,
     required this.updateDate,
+    required this.imageUrl,
+    required this.csvUrl, // Inicialización de csvUrl
   });
 
-  // Método para convertir un documento de Firestore en un objeto Model
   factory Report.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map<String, dynamic>;
 
     return Report(
-      id: data['id'] ?? '',
+      id: doc.id,
       title: data['title'] ?? '',
-      location: data['location'] ?? '',
-      author: data['author'] ?? '',
-      imageUrl: data['imageUrl'] ?? '',
       description: data['description'] ?? '',
+      author: data['author'] ?? '',
       category: data['category'] ?? '',
       creationDate: data['creationDate'] ?? '',
+      location: data['location'] ?? '',
       version: data['version'] ?? '',
       updateDate: data['updateDate'] ?? '',
+      imageUrl: data['imageUrl'] ?? '',
+      csvUrl: data['csvUrl'] ?? '', // Obtener csvUrl del documento
     );
   }
 
-  // Método para convertir un objeto Model en un mapa, útil para guardar en Firestore
   Map<String, dynamic> toMap() {
     return {
       'title': title,
       'description': description,
+      'author': author,
       'category': category,
       'creationDate': creationDate,
+      'location': location,
       'version': version,
       'updateDate': updateDate,
+      'imageUrl': imageUrl,
+      'csvUrl': csvUrl, // Agregar csvUrl al mapa
     };
   }
 }
