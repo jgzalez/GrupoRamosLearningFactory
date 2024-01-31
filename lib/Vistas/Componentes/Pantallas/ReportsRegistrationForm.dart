@@ -45,12 +45,12 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
 
   void fetchModels() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    var snapshot = await firestore
-        .collection('modelos')
-        .get(); // Asume que tienes una colección 'models'
-    var fetchedModels = snapshot.docs
-        .map((doc) => doc.id)
-        .toList(); // O el campo que identifique cada modelo
+    var snapshot = await firestore.collection('modelos').get();
+    var fetchedModels = snapshot.docs.map((doc) {
+      return doc
+          .data()['title']
+          .toString(); // Just get the title, not the whole map
+    }).toList();
 
     setState(() {
       models = fetchedModels;
@@ -69,7 +69,7 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
       // await saveReportToFile(report,
       //     'establishment_report.txt'); // Aquí especificas la ruta del archivo
       // Llamar a la función en Model1 para procesar la data
-      if (selectedModel == "modelos01") {
+      if (selectedModel == "Tienda Stnd") {
         await Model1.processEstablishmentData(report);
       }
       print(report);
@@ -80,19 +80,19 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
     }
   }
 
-  void testCreateReport() async {
-    try {
-      String testEstablishmentId =
-          "establecimientos01"; // Replace with an actual ID
-      Map<String, dynamic> report =
-          await createEstablishmentReport(testEstablishmentId);
-      String jsonString = json.encode(report);
-      print("Report generated: $jsonString");
-      print("Report generated: $report");
-    } catch (e) {
-      print("Error testing report generation: $e");
-    }
-  }
+  // void testCreateReport() async {
+  //   try {
+  //     String testEstablishmentId =
+  //         "establecimientos01"; // Replace with an actual ID
+  //     Map<String, dynamic> report =
+  //         await createEstablishmentReport(testEstablishmentId);
+  //     String jsonString = json.encode(report);
+  //     print("Report generated: $jsonString");
+  //     print("Report generated: $report");
+  //   } catch (e) {
+  //     print("Error testing report generation: $e");
+  //   }
+  // }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,10 +127,10 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
                   selectedModel = newValue;
                 });
               },
-              items: models.map<DropdownMenuItem<String>>((String value) {
+              items: models.map<DropdownMenuItem<String>>((String title) {
                 return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
+                  value: title, // Store the model title
+                  child: Text(title), // Display the model title
                 );
               }).toList(),
               hint: Text("Selecciona un Modelo"),
@@ -140,16 +140,16 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
               onPressed: generateReport,
               child: Text('Generar Reporte'),
             ),
-            Text(
-              "Próximamente Solo en Cines",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: testCreateReport,
-              child: Text('Test Report Generation'),
-            ),
+            // Text(
+            //   "Próximamente Solo en Cines",
+            //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            //   textAlign: TextAlign.center,
+            // ),
+            // SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: testCreateReport,
+            //   child: Text('Test Report Generation'),
+            // ),
           ],
         ),
       ),

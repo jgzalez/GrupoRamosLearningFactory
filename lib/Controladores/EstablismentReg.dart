@@ -23,7 +23,8 @@ class _EstablishmentRegistrationFormState
   final _formKey = GlobalKey<FormState>();
   final List<String> _categories = [
     'Tienda',
-    'Híper'
+    'Híper',
+    'Seleccionar'
   ]; // Opciones para el dropdown
   // Controladores de texto
   final TextEditingController _titleController = TextEditingController();
@@ -32,7 +33,7 @@ class _EstablishmentRegistrationFormState
   final TextEditingController _imageUrlController = TextEditingController();
   final TextEditingController _creationDateController = TextEditingController();
   final TextEditingController _authorController = TextEditingController();
-  String _selectedCategory = 'Tienda'; // Valor inicial
+  String _selectedCategory = 'Seleccionar'; // Valor inicial
 
   // Variables para guardar los archivos seleccionados
   Map<String, PlatformFile> _selectedFiles = {};
