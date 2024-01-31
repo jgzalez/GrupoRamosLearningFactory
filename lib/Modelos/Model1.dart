@@ -76,7 +76,7 @@ class Model1 {
       "Cantidad de Empleados Actuales",
       "Tipo Tienda",
       "Zona",
-      "Área"
+      "Monto Venta Promedio" // New header
     ];
     csvBuffer.writeln(headers.join(','));
 
@@ -98,6 +98,8 @@ class Model1 {
             row['Cantidad de Empleados Actuales'] ?? '',
             row['Tipo Tienda'] ?? '',
             row['Zona'] ?? '',
+            row['Monto Venta Promedio'] ?? '', // Add the new column value
+
             // Agrega aquí los campos adicionales que necesites
           ];
           csvBuffer.writeln(rowData.join(','));
@@ -225,6 +227,11 @@ List<Map<String, dynamic>> calculateAdditionalColumns(
       tiempoServicio = data['Tiempo de servicio Mes/Ano'];
     }
 
+    double montoVentaPromedio = 0;
+    if (data['Monto Venta Promedio'] != null &&
+        data['Monto Venta Promedio'] is int) {
+      montoVentaPromedio = data['Monto Venta Promedio'];
+    }
     print(tiempoServicio);
 
     int tiempoDisponible =
@@ -235,8 +242,8 @@ List<Map<String, dynamic>> calculateAdditionalColumns(
     }
 
     // Calcula la demanda proyectada diaria en unidades (puedes ajustar esta fórmula según tus necesidades)
-    double demandaProyectada = ventas /
-        tiempoServicio; // Asumiendo que las ventas representan la demanda
+    double demandaProyectada = (ventas / montoVentaPromedio) / 30;
+    // Asumiendo que las ventas representan la demanda
 
     // Calcula el tiempo proyectado demandado
     double tiempoProyectadoDemandado = demandaProyectada * tiempoServicio;
@@ -254,7 +261,7 @@ List<Map<String, dynamic>> calculateAdditionalColumns(
       'Tiempo proyectado demandado': tiempoProyectadoDemandado,
       'Cantidad Real de Empleados Requeridos': cantidadEmpleadosRequeridos,
       'Cantidad redondeada de empleados': cantidadRedondeadaEmpleados,
-      // Agrega aquí los campos adicionales que necesites
+      'Monto Venta Promedio': montoVentaPromedio, // Add the new field
     };
   }).toList();
 }

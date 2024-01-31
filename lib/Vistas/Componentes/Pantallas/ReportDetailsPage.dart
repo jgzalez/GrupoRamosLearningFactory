@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:frontend/Modelos/Reports.dart';
+import 'package:frontend/Modelos/Reports.dart'; // Assuming Report class is in this location
 
 class ReportDetailsPage extends StatelessWidget {
   final Report report;
@@ -24,9 +24,19 @@ class ReportDetailsPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              // ... otros Text y SelectableText para mostrar detalles del reporte
+              Text(
+                "Detalles del Reporte",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              Text("Título: ${report.title}"),
+              Text("Autor: ${report.author}"),
+              Text("Descripción: ${report.description}"),
+              // Add more details from the Report class as needed
+              SizedBox(height: 20),
               if (report.csvUrl != null && report.csvUrl.isNotEmpty)
                 _buildDownloadCsvSection(context, report.csvUrl),
+              // ... otros Text y SelectableText para mostrar detalles del reporte
             ],
           ),
         ),
@@ -47,14 +57,20 @@ class ReportDetailsPage extends StatelessWidget {
         }
       },
       child: Padding(
-        padding: const EdgeInsets.only(top: 8.0),
-        child: Text(
-          'Descargar CSV',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.blue,
-            decoration: TextDecoration.underline,
-          ),
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
+          children: [
+            Icon(Icons.download, color: Colors.blue),
+            SizedBox(width: 8),
+            Text(
+              'Descargar CSV',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.blue,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ],
         ),
       ),
     );

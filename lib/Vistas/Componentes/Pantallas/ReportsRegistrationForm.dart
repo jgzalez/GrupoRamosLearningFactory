@@ -108,6 +108,7 @@ class _ReportsRegistrationFormState extends State<ReportsRegistrationForm> {
               onChanged: (newValue) {
                 setState(() {
                   selectedEstablishmentId = newValue;
+                  print(selectedEstablishmentId);
                 });
               },
               items: establishmentsData
